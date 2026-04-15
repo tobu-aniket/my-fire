@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="FIRE calculator — monthly expenses, inflation, withdrawal rates, and corpus targets (Sheet4 parity)."
+    />
+    <link rel="canonical" href="https://tobu-aniket.github.io/my-fire/" />
+    <title>My FIRE — calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="wrap">
+      <header class="site-header">
+        <div>
+          <h1>FIRE calculator</h1>
+          <p class="lede">
+            Project retirement expenses with inflation, compare FIRE variants, and see corpus targets by
+            withdrawal rate. The math mirrors the FIRE calculator sheet in your Financial Goals workbook.
+          </p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-theme" id="btn-theme" aria-pressed="false" title="Toggle dark mode">
+            ◐
+          </button>
+        </div>
+      </header>
+
+      <main id="main" class="grid-main">
+        <section class="card" aria-labelledby="inputs-heading">
+          <h2 id="inputs-heading">Inputs</h2>
+          <p class="hint" style="margin: -0.5rem 0 1rem; font-size: 0.8rem; color: var(--muted)">
+            Green-bordered fields match editable cells in Excel.
+          </p>
+          <div class="field">
+            <label for="in-c2">Monthly expense (₹)</label>
+            <input class="input-editable" id="in-c2" type="number" inputmode="decimal" min="0" step="1" required />
+          </div>
+          <div class="field">
+            <label for="in-f2">Years to retirement</label>
+            <input class="input-editable" id="in-f2" type="number" inputmode="decimal" min="0" max="80" step="0.1" required />
+          </div>
+          <div class="field">
+            <label for="in-c4">Start year</label>
+            <input class="input-editable" id="in-c4" type="number" inputmode="numeric" min="1900" max="2200" step="1" required />
+          </div>
+          <div class="field">
+            <label for="in-f4">Inflation % (annual)</label>
+            <input class="input-editable" id="in-f4" type="number" inputmode="decimal" step="0.1" required />
+          </div>
+          <div class="field">
+            <label for="in-f7">Expected CAGR % (Coast FIRE)</label>
+            <input class="input-editable" id="in-f7" type="number" inputmode="decimal" step="0.1" required />
+          </div>
+          <div class="field-actions">
+            <button type="button" class="btn" id="btn-reset">Reset to defaults</button>
+          </div>
+          <div class="share-row">
+            <label for="share-link">Share (short hash in URL)</label>
+            <input id="share-link" class="share-url" type="text" readonly aria-readonly="true" />
+            <button type="button" class="btn" id="btn-copy-url">Copy link</button>
+          </div>
+        </section>
+
+        <div>
+          <section class="card" aria-labelledby="summary-heading">
+            <h2 id="summary-heading">Summary</h2>
+            <dl class="metrics">
+              <div class="metric">
+                <dt>Annual expense today</dt>
+                <dd id="out-c3">—</dd>
+              </div>
+              <div class="metric">
+                <dt>Retirement year</dt>
+                <dd id="out-c5">—</dd>
+              </div>
+              <div class="metric">
+                <dt>Monthly expense at retirement</dt>
+                <dd id="out-c7">—</dd>
+              </div>
+              <div class="metric">
+                <dt>Annual expense at retirement</dt>
+                <dd id="out-c8">—</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="card" style="margin-top: 1.5rem" aria-labelledby="fire-heading">
+            <h2 id="fire-heading">FIRE types</h2>
+            <p id="std-fire-note" class="hint" style="margin: -0.25rem 0 0.75rem; font-size: 0.85rem"></p>
+            <div class="table-wrap table-wrap--fire">
+              <table>
+                <caption>FIRE corpus targets</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Formula (vs F)</th>
+                    <th scope="col" class="num">Corpus (₹)</th>
+                    <th scope="col" class="num" title="Largest Indian unit, up to 2 decimal places">Approx. (Cr / lakhs / …)</th>
+                  </tr>
+                </thead>
+                <tbody id="fire-tbody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card" style="margin-top: 1.5rem" aria-labelledby="swr-heading">
+            <div class="toolbar">
+              <button type="button" class="btn" id="btn-copy-csv">Copy SWR table as CSV</button>
+            </div>
+            <h2 id="swr-heading" class="section-title">Withdrawal rate (SWR) table</h2>
+            <div class="table-wrap">
+              <table>
+                <caption>Corpus by safe withdrawal rate</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">SWR %</th>
+                    <th scope="col" class="num">Multiplier</th>
+                    <th scope="col" class="num">Annual expense</th>
+                    <th scope="col" class="num">Total corpus</th>
+                    <th
+                      scope="col"
+                      class="num"
+                      title="Largest Indian unit, up to 2 decimal places"
+                    >
+                      Approx. (Cr / lakhs / …)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="swr-tbody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card custom-card" aria-labelledby="custom-heading">
+            <h2 id="custom-heading">Custom expected CAGR</h2>
+            <p class="hint" style="margin-top: -0.35rem; font-size: 0.85rem">
+              Spread = Expected CAGR (custom) − inflation. Multiplier = 100 ÷ spread × annual expense at retirement.
+            </p>
+            <div class="field field--custom">
+              <label for="in-a22">Expected CAGR % (custom row)</label>
+              <span class="hint">Compared to inflation for the multiplier below. Not in the share link — opening a shared URL uses the Coast FIRE “Expected CAGR” value above as the default here.</span>
+              <input class="input-editable" id="in-a22" type="number" inputmode="decimal" step="0.1" required />
+            </div>
+            <div id="custom-block" class="custom-grid">
+              <div><span>Spread (CAGR − inflation)</span> <span class="mono" id="out-b23">—</span></div>
+              <div><span>Multiplier</span> <span class="mono" id="out-c23">—</span></div>
+              <div><span>Annual expense at retirement</span> <span class="mono" id="out-d23">—</span></div>
+              <div><span>Implied corpus</span> <span class="mono" id="out-e23">—</span></div>
+              <div><span>Approx. (Cr / lakhs / …)</span> <span class="mono" id="out-g23">—</span></div>
+            </div>
+            <div id="custom-warning" class="warning" hidden aria-live="polite"></div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          Static page — main inputs are stored in this browser and encoded in the URL hash (v1: five numbers;
+          custom-row CAGR is not shared and defaults from Coast FIRE CAGR when you open a link).
+        </p>
+      </footer>
+    </div>
+    <script src="js/sheet4.js" defer></script>
+  </body>
+</html>
