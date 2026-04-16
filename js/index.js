@@ -18,6 +18,54 @@ import {
   updateUrlQuery,
 } from './utils.js';
 
+const fireSortState = {
+  key: /** @type {'label'|'formula'|'corpus'|'approx'|''} */ (''),
+  dir: /** @type {1|-1} */ (1),
+};
+
+/**
+ * @param {Array<{key:string,label:string,formula:string,j:number}>} rows
+ */
+function sortFireRows(rows) {
+  if (!fireSortState.key) return rows;
+  const dir = fireSortState.dir;
+  const key = fireSortState.key;
+  return rows
+    .map((r, idx) => ({ r, idx }))
+    .sort((a, b) => {
+      let av;
+      let bv;
+      if (key === 'label') {
+        av = a.r.label.toLowerCase();
+        bv = b.r.label.toLowerCase();
+      } else if (key === 'formula') {
+        av = a.r.formula.toLowerCase();
+        bv = b.r.formula.toLowerCase();
+      } else {
+        av = a.r.j;
+        bv = b.r.j;
+      }
+      if (av < bv) return -1 * dir;
+      if (av > bv) return 1 * dir;
+      return a.idx - b.idx;
+    })
+    .map((x) => x.r);
+}
+
+function updateFireHeaderSortUi() {
+  const table = document.getElementById('fire-table');
+  if (!table) return;
+  const ths = table.querySelectorAll('thead th[data-sort]');
+  ths.forEach((th) => {
+    const k = th.getAttribute('data-sort');
+    if (k && k === fireSortState.key) {
+      th.setAttribute('aria-sort', fireSortState.dir === 1 ? 'ascending' : 'descending');
+    } else {
+      th.setAttribute('aria-sort', 'none');
+    }
+  });
+}
+
 function readForm() {
   return sanitizeInputs({
     c2: Number.parseFloat(/** @type {HTMLInputElement} */ (el('in-c2')).value),
@@ -109,7 +157,9 @@ function applyResults(data) {
 
   const tbody = /** @type {HTMLTableSectionElement} */ (el('fire-tbody'));
   tbody.innerHTML = '';
-  data.fireRows.forEach((row) => {
+  const fireRows = sortFireRows(data.fireRows);
+  updateFireHeaderSortUi();
+  fireRows.forEach((row) => {
     const tr = document.createElement('tr');
     tr.appendChild(buildFireTypeHeader(row));
 
@@ -195,6 +245,24 @@ function init() {
   const fromUrl = loadFromUrl();
   const initial = fromUrl || fromStore || DEFAULTS;
   writeForm(initial);
+
+  const fireTable = document.getElementById('fire-table');
+  if (fireTable) {
+    fireTable.querySelectorAll('thead th[data-sort] .sort-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const th = /** @type {HTMLElement} */ (btn.closest('th'));
+        const key = th ? th.getAttribute('data-sort') : null;
+        if (!key) return;
+        if (fireSortState.key === key) {
+          fireSortState.dir = fireSortState.dir === 1 ? -1 : 1;
+        } else {
+          fireSortState.key = /** @type {any} */ (key);
+          fireSortState.dir = 1;
+        }
+        recalc();
+      });
+    });
+  }
 
   ['in-c2', 'in-f2', 'in-c4', 'in-f4', 'in-f7', 'in-a22'].forEach((id) => {
     el(id).addEventListener('input', recalc);

@@ -290,6 +290,39 @@ th {
   letter-spacing: 0.04em;
 }
 
+.sort-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.sort-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+th[data-sort] {
+  user-select: none;
+}
+
+th[data-sort][aria-sort='ascending'] .sort-btn::after {
+  content: ' ▲';
+  font-size: 0.75em;
+}
+
+th[data-sort][aria-sort='descending'] .sort-btn::after {
+  content: ' ▼';
+  font-size: 0.75em;
+}
+
 td.num {
   font-family: var(--mono);
   text-align: right;
