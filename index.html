@@ -65,7 +65,7 @@
             <button type="button" class="btn" id="btn-reset">Reset to defaults</button>
           </div>
           <div class="share-row">
-            <label for="share-link">Share (short hash in URL)</label>
+            <label for="share-link">Share (readable URL params)</label>
             <input id="share-link" class="share-url" type="text" readonly aria-readonly="true" />
             <button type="button" class="btn" id="btn-copy-url">Copy link</button>
           </div>
@@ -165,8 +165,9 @@
 
       <footer class="site-footer">
         <p>
-          Static page — main inputs are stored in this browser and encoded in the URL hash (v1: five numbers;
-          custom-row CAGR is not shared and defaults from Coast FIRE CAGR when you open a link).
+          Static page — main inputs are stored in this browser and shared as readable URL parameters
+          (monthlyExpense, yearsToRetirement, startYear, inflationPct, expectedCagrPct). Custom-row CAGR is not
+          shared and defaults from Coast FIRE CAGR when you open a link.
         </p>
       </footer>
     </div>

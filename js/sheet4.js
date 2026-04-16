@@ -1,7 +1,8 @@
 /**
  * Sheet4 FIRE calculator — parity with Excel "Sheet4" formulas.
- * URL hash: v1 payload (5 × float64: c2,f2,c4,f4,f7) → base64url. Custom-row CAGR (a22) is not encoded;
- * when opening a shared link, a22 defaults to f7. Legacy 6-float hashes still decode.
+ * Share URL: plain query params (monthlyExpense, yearsToRetirement, startYear, inflationPct, expectedCagrPct) — no encoding.
+ * Custom-row CAGR (a22) is not shared; when opening a shared URL, a22 defaults to f7.
+ * Legacy #v1... hash links still decode on first load for backwards compatibility.
  */
 
 (function () {
@@ -9,6 +10,33 @@
 
   const STORAGE_KEY = 'fire-sheet4-v1';
   const HASH_PREFIX = 'v1';
+
+  /**
+   * Share URL params (human readable) + aliases for older links.
+   * Internal keys match the Excel-ish names used in this app.
+   */
+  const SHARE_PARAM_CONFIG = {
+    c2: {
+      name: 'monthlyExpense',
+      aliases: ['c2', 'me'],
+    },
+    f2: {
+      name: 'yearsToRetirement',
+      aliases: ['f2', 'years', 'ytr'],
+    },
+    c4: {
+      name: 'startYear',
+      aliases: ['c4', 'sy'],
+    },
+    f4: {
+      name: 'inflationPct',
+      aliases: ['f4', 'inflation', 'inf'],
+    },
+    f7: {
+      name: 'expectedCagrPct',
+      aliases: ['f7', 'cagr', 'expCagr'],
+    },
+  };
 
   const DEFAULTS = {
     c2: 100000,
@@ -171,21 +199,7 @@
     return x.toLocaleString('en-IN', { maximumFractionDigits: 0 });
   }
 
-  /** Pack five numbers into base64url (40 bytes raw). a22 is excluded so shared links stay smaller. */
-  function encodeHash(inputs) {
-    const arr = new Float64Array([inputs.c2, inputs.f2, inputs.c4, inputs.f4, inputs.f7]);
-    const bytes = new Uint8Array(arr.buffer);
-    let bin = '';
-    for (let i = 0; i < bytes.length; i++) {
-      bin += String.fromCharCode(bytes[i]);
-    }
-    const b64 = btoa(bin);
-    return (
-      HASH_PREFIX +
-      b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    );
-  }
-
+  /** Legacy decode for old shared hash links (#v1...). */
   function decodeHash(str) {
     if (!str || typeof str !== 'string') return null;
     const s = str.replace(/^#/, '');
@@ -213,6 +227,44 @@
     } catch {
       return null;
     }
+  }
+
+  function encodeQuery(inputs) {
+    const s = sanitizeInputs(inputs);
+    const qs = new URLSearchParams();
+    qs.set(SHARE_PARAM_CONFIG.c2.name, String(s.c2));
+    qs.set(SHARE_PARAM_CONFIG.f2.name, String(s.f2));
+    qs.set(SHARE_PARAM_CONFIG.c4.name, String(s.c4));
+    qs.set(SHARE_PARAM_CONFIG.f4.name, String(s.f4));
+    qs.set(SHARE_PARAM_CONFIG.f7.name, String(s.f7));
+    return qs.toString();
+  }
+
+  function getQueryParam(qs, cfg) {
+    if (qs.has(cfg.name)) return qs.get(cfg.name);
+    for (const a of cfg.aliases || []) {
+      if (qs.has(a)) return qs.get(a);
+    }
+    return null;
+  }
+
+  function decodeQuery() {
+    const qs = new URLSearchParams(window.location.search);
+    const c2 = getQueryParam(qs, SHARE_PARAM_CONFIG.c2);
+    const f2 = getQueryParam(qs, SHARE_PARAM_CONFIG.f2);
+    const c4 = getQueryParam(qs, SHARE_PARAM_CONFIG.c4);
+    const f4 = getQueryParam(qs, SHARE_PARAM_CONFIG.f4);
+    const f7 = getQueryParam(qs, SHARE_PARAM_CONFIG.f7);
+    const hasAny = c2 !== null || f2 !== null || c4 !== null || f4 !== null || f7 !== null;
+    if (!hasAny) return null;
+    const parsed = {
+      c2,
+      f2,
+      c4,
+      f4,
+      f7,
+    };
+    return sanitizeInputs(parsed);
   }
 
   function sanitizeInputs(raw) {
@@ -371,31 +423,34 @@
     }
   }
 
-  let hashSync = false;
-
-  function updateUrlHash(inputs) {
-    const h = encodeHash(sanitizeInputs(inputs));
-    const newHash = '#' + h;
-    if (window.location.hash !== newHash) {
-      hashSync = true;
-      if (history.replaceState) {
-        history.replaceState(null, '', window.location.pathname + window.location.search + newHash);
-      } else {
-        window.location.hash = h;
-      }
-      hashSync = false;
+  function updateUrlQuery(inputs) {
+    const query = encodeQuery(inputs);
+    const base = window.location.pathname;
+    const next = query ? base + '?' + query : base;
+    if (history.replaceState) {
+      history.replaceState(null, '', next);
     }
   }
 
-  function loadFromHash() {
-    const decoded = decodeHash(window.location.hash);
-    if (!decoded) return null;
-    const merged = { ...DEFAULTS, ...decoded };
+  function loadFromUrl() {
+    const fromQuery = decodeQuery();
+    if (fromQuery) {
+      return sanitizeInputs({ ...fromQuery, a22: fromQuery.f7 });
+    }
+
+    const legacy = decodeHash(window.location.hash);
+    if (!legacy) return null;
+
+    const merged = { ...DEFAULTS, ...legacy };
     let s = sanitizeInputs(merged);
-    if (decoded.a22 === undefined) {
+    if (legacy.a22 === undefined) {
       merged.a22 = s.f7;
       s = sanitizeInputs(merged);
     }
+
+    // Migrate legacy hash link into readable query params.
+    updateUrlQuery(s);
+    if (window.location.hash) window.location.hash = '';
     return s;
   }
 
@@ -420,15 +475,15 @@
     const data = compute(inputs);
     applyResults(data);
     saveToStorage(inputs);
-    updateUrlHash(inputs);
+    updateUrlQuery(inputs);
     const linkEl = document.getElementById('share-link');
     if (linkEl) linkEl.value = window.location.href;
   }
 
   function init() {
-    const fromHash = loadFromHash();
     const fromStore = loadFromStorage();
-    const initial = fromHash || fromStore || DEFAULTS;
+    const fromUrl = loadFromUrl();
+    const initial = fromUrl || fromStore || DEFAULTS;
     writeForm(initial);
 
     ['in-c2', 'in-f2', 'in-c4', 'in-f4', 'in-f7', 'in-a22'].forEach((id) => {
@@ -481,17 +536,6 @@
         },
         () => {}
       );
-    });
-
-    window.addEventListener('hashchange', () => {
-      if (hashSync) return;
-      const h = loadFromHash();
-      if (h) {
-        writeForm(h);
-        const data = compute(readForm());
-        applyResults(data);
-        saveToStorage(readForm());
-      }
     });
 
     // Theme
