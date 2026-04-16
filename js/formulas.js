@@ -30,8 +30,6 @@ export function compute(inputs) {
   });
 
   const e19 = swrRows[4].corpus;
-  const e18 = swrRows[3].corpus;
-  const e17 = swrRows[2].corpus;
 
   const j7 = e19;
   const j4 = 0.75 * j7;
@@ -40,8 +38,8 @@ export function compute(inputs) {
   const j8 = 1.75 * j7;
   const j9 = 3 * j7;
   const j10 = 5 * j7;
-  const j11 = e18;
-  const j12 = e17;
+  const j11 = (j7 * 4) / 3.5;
+  const j12 = (j7 * 4) / 3;
 
   const fireRows = [
     { key: 'lean', label: 'Lean FIRE', formula: '0.75 × F', j: j4 },
@@ -51,8 +49,8 @@ export function compute(inputs) {
     { key: 'chubby', label: 'Chubby FIRE', formula: '1.75 × F', j: j8 },
     { key: 'fat', label: 'Fat FIRE', formula: '3 × F', j: j9 },
     { key: 'obese', label: 'Obese FIRE', formula: '5 × F', j: j10 },
-    { key: 'safe35', label: 'Safe FIRE (3.5%)', formula: 'cell E18', j: j11 },
-    { key: 'safe3', label: 'Safe FIRE (3%)', formula: 'cell E17', j: j12 },
+    { key: 'safe35', label: 'Safe FIRE (3.5%)', formula: 'F * 4 / 3.5', j: j11 },
+    { key: 'safe3', label: 'Safe FIRE (3%)', formula: 'F * 4 / 3', j: j12 },
   ];
 
   const b23 = a22 - f4;

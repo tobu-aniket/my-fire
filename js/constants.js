@@ -54,9 +54,9 @@ export const FIRE_TYPE_DEFINITIONS = {
   fat: 'Fat FIRE allows high discretionary spending. Here: 3 × the standard FIRE corpus.',
   obese: 'Obese FIRE is a very large spending cushion. Here: 5 × the standard FIRE corpus.',
   safe35:
-    'Uses a stricter 3.5% withdrawal assumption instead of 4%. The corpus equals the 3.5% row (E18) in the SWR table.',
+    'Uses a stricter 3.5% withdrawal assumption instead of 4%. Starting from F (4% corpus), this sheet computes it as F × 4 ÷ 3.5.',
   safe3:
-    'Uses a 3% withdrawal assumption (common for extra safety). The corpus equals the 3% row (E17) in the SWR table.',
+    'Uses a 3% withdrawal assumption (common for extra safety). Starting from F (4% corpus), this sheet computes it as F × 4 ÷ 3.',
 };
 
 export const INFO_ICON_SVG =
