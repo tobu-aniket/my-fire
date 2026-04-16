@@ -45,12 +45,12 @@ export function compute(inputs) {
     { key: 'lean', label: 'Lean FIRE', formula: '0.75 × F', j: j4 },
     { key: 'barista', label: 'Barista FIRE', formula: 'F / 2', j: j5 },
     { key: 'coast', label: 'Coast FIRE', formula: 'F / (1+r)^n', j: j6 },
-    { key: 'standard', label: 'Standard FIRE', formula: 'F', j: j7 },
-    { key: 'chubby', label: 'Chubby FIRE', formula: '1.75 × F', j: j8 },
-    { key: 'fat', label: 'Fat FIRE', formula: '3 × F', j: j9 },
-    { key: 'obese', label: 'Obese FIRE', formula: '5 × F', j: j10 },
+    { key: 'standard', label: 'Standard FIRE (4%)', formula: 'F', j: j7 },
     { key: 'safe35', label: 'Safe FIRE (3.5%)', formula: 'F * 4 / 3.5', j: j11 },
     { key: 'safe3', label: 'Safe FIRE (3%)', formula: 'F * 4 / 3', j: j12 },
+    { key: 'chubby', label: 'Chubby FIRE', formula: '1.75 × F', j: j8 },
+    { key: 'fat', label: 'Fat FIRE', formula: '3 × F', j: j9 },
+    { key: 'obese', label: 'Obese FIRE', formula: '5 × F', j: j10 }
   ];
 
   const b23 = a22 - f4;
