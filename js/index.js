@@ -21,13 +21,14 @@ import {
 const fireSortState = {
   key: /** @type {'label'|'formula'|'corpus'|'approx'|''} */ (''),
   dir: /** @type {1|-1} */ (1),
+  phase: /** @type {0|1|2} */ (0), // 0=none, 1=asc, 2=desc
 };
 
 /**
  * @param {Array<{key:string,label:string,formula:string,j:number}>} rows
  */
 function sortFireRows(rows) {
-  if (!fireSortState.key) return rows;
+  if (!fireSortState.key || fireSortState.phase === 0) return rows;
   const dir = fireSortState.dir;
   const key = fireSortState.key;
   return rows
@@ -58,8 +59,11 @@ function updateFireHeaderSortUi() {
   const ths = table.querySelectorAll('thead th[data-sort]');
   ths.forEach((th) => {
     const k = th.getAttribute('data-sort');
-    if (k && k === fireSortState.key) {
-      th.setAttribute('aria-sort', fireSortState.dir === 1 ? 'ascending' : 'descending');
+    if (k && k === fireSortState.key && fireSortState.phase !== 0) {
+      th.setAttribute(
+        'aria-sort',
+        fireSortState.dir === 1 ? 'ascending' : 'descending'
+      );
     } else {
       th.setAttribute('aria-sort', 'none');
     }
@@ -253,10 +257,18 @@ function init() {
         const th = /** @type {HTMLElement} */ (btn.closest('th'));
         const key = th ? th.getAttribute('data-sort') : null;
         if (!key) return;
-        if (fireSortState.key === key) {
-          fireSortState.dir = fireSortState.dir === 1 ? -1 : 1;
-        } else {
+        if (fireSortState.key !== key) {
           fireSortState.key = /** @type {any} */ (key);
+          fireSortState.phase = 1;
+          fireSortState.dir = 1;
+        } else if (fireSortState.phase === 0) {
+          fireSortState.phase = 1;
+          fireSortState.dir = 1;
+        } else if (fireSortState.phase === 1) {
+          fireSortState.phase = 2;
+          fireSortState.dir = -1;
+        } else {
+          fireSortState.phase = 0;
           fireSortState.dir = 1;
         }
         recalc();
