@@ -151,6 +151,7 @@ function applyResults(data) {
   updateFireHeaderSortUi();
   fireRows.forEach((row) => {
     const tr = document.createElement('tr');
+    if (row.key === 'standard') tr.classList.add('row-std-fire');
     tr.appendChild(buildFireTypeHeader(row));
 
     const tdFormula = document.createElement('td');

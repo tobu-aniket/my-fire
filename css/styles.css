@@ -118,6 +118,24 @@ a {
   letter-spacing: -0.02em;
 }
 
+.brand-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.brand-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .lede {
   margin: 0;
   max-width: 52ch;
@@ -336,6 +354,15 @@ a {
   font-size: 1rem;
 }
 
+/* FIRE summary: annual expense at retirement (mild red emphasis). */
+#out-c8 {
+  color: #a94a4a;
+}
+
+[data-theme='dark'] #out-c8 {
+  color: #ff9a9a;
+}
+
 .section-title {
   margin: 0 0 0.75rem;
   font-size: 1rem;
@@ -533,6 +560,7 @@ code {
   background: var(--accent-soft);
 }
 
+.row-std-fire th,
 .row-std-fire td {
   font-weight: 600;
 }
