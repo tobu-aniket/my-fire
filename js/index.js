@@ -5,6 +5,7 @@
 
 import { DEFAULTS, FIRE_TYPE_DEFINITIONS, INFO_ICON_SVG } from './constants.js';
 import { compute } from './formulas.js';
+import { initGoalsTab } from './goals/ui.js';
 import {
   decodeHash,
   decodeQuery,
@@ -249,6 +250,26 @@ function init() {
   const fromUrl = loadFromUrl();
   const initial = fromUrl || fromStore || DEFAULTS;
   writeForm(initial);
+
+  // Tabs
+  const tabButtons = document.querySelectorAll('.tab-btn[data-tab]');
+  const panels = document.querySelectorAll('.tab-panel[data-tab-panel]');
+  function setTab(tab) {
+    tabButtons.forEach((b) => {
+      if (b.getAttribute('data-tab') === tab) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
+    panels.forEach((p) => {
+      const t = p.getAttribute('data-tab-panel');
+      if (t === tab) p.removeAttribute('hidden');
+      else p.setAttribute('hidden', '');
+    });
+    if (tab === 'goals') initGoalsTab();
+  }
+  tabButtons.forEach((b) => {
+    b.addEventListener('click', () => setTab(b.getAttribute('data-tab')));
+  });
+  setTab('fire');
 
   const fireTable = document.getElementById('fire-table');
   if (fireTable) {

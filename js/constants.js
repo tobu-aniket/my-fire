@@ -62,3 +62,16 @@ export const FIRE_TYPE_DEFINITIONS = {
 export const INFO_ICON_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
 
+// Goals tab
+export const GOALS_STORAGE_KEYS = {
+  rows: 'goals_rows_v1',
+  expectedCagrPct: 'goals_expectedCagrPct_v1',
+  goalOptions: 'goals_goalOptions_v1',
+  realisedOptions: 'goals_realisedOptions_v1',
+};
+
+export const GOALS_ENUMS = {
+  needDesire: ['Need', 'Desire'],
+  priority: ['High', 'Medium', 'Low'],
+};
+
