@@ -70,6 +70,44 @@ function goalStatusLabel(s) {
   return 'Active';
 }
 
+function normaliseGoalStatusValue(value) {
+  return value === 'achieved' || value === 'notMyGoal' ? value : 'active';
+}
+
+function applyRowInput(row, field, t) {
+  if (field === 'combinedGoal' && t instanceof HTMLInputElement) {
+    const parsed = parseCombinedGoal(t.value);
+    row.goal = parsed.goal;
+    row.realisedGoal = parsed.realisedGoal;
+    return;
+  }
+
+  if (field === 'goalStatus' && t instanceof HTMLSelectElement) {
+    row.goalStatus = normaliseGoalStatusValue(t.value);
+    return;
+  }
+
+  if (t instanceof HTMLInputElement && t.type === 'number') {
+    const n = Number.parseFloat(t.value);
+    const v = Number.isFinite(n) ? n : 0;
+    if (field === 'costToday' || field === 'achieveByYear' || field === 'segmentInflationPct') {
+      row[field] = v;
+      return;
+    }
+    row[field] = t.value;
+    return;
+  }
+
+  if (t instanceof HTMLInputElement) {
+    row[field] = t.value;
+    return;
+  }
+
+  if (t instanceof HTMLSelectElement) {
+    row[field] = t.value;
+  }
+}
+
 /** Include in footer totals only when still planning for this goal. */
 function countsTowardTotals(row) {
   return normaliseGoalStatus(row) === 'active';
@@ -125,7 +163,7 @@ function sortRows(rows, expectedCagrPct, planningStartYear) {
 
 function updateSortUi(table) {
   table.querySelectorAll('thead th[data-sort]').forEach((th) => {
-    const k = th.getAttribute('data-sort');
+    const k = th.dataset.sort;
     if (k && k === sortState.key && sortState.phase !== 0) {
       th.setAttribute('aria-sort', sortState.dir === 1 ? 'ascending' : 'descending');
     } else {
@@ -329,6 +367,15 @@ export function initGoalsTab() {
 
   const onChange = () => render(controls, state);
 
+  function getRowAndFieldFromTarget(t) {
+    if (!(t instanceof HTMLElement)) return { row: null, field: null, el: null };
+    const rowId = t.dataset.rowId;
+    const field = t.dataset.field;
+    if (!rowId || !field) return { row: null, field: null, el: t };
+    const row = state.rows.find((r) => r.id === rowId) ?? null;
+    return { row, field, el: t };
+  }
+
   controls.cagr.addEventListener('input', onChange);
   controls.startYear.addEventListener('input', onChange);
 
@@ -371,7 +418,7 @@ export function initGoalsTab() {
   controls.table.querySelectorAll('thead th[data-sort] .sort-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const th = btn.closest('th');
-      const key = th ? th.getAttribute('data-sort') : null;
+      const key = th ? th.dataset.sort : null;
       if (!key) return;
       if (sortState.key !== key) {
         sortState.key = key;
@@ -392,42 +439,13 @@ export function initGoalsTab() {
   });
 
   controls.tbody.addEventListener('input', (e) => {
-    const t = e.target;
-    if (!(t instanceof HTMLElement)) return;
-    const rowId = t.dataset.rowId;
-    const field = t.dataset.field;
-    if (!rowId || !field) return;
-    const row = state.rows.find((r) => r.id === rowId);
-    if (!row) return;
-    if (field === 'combinedGoal' && t instanceof HTMLInputElement) {
-      const parsed = parseCombinedGoal(t.value);
-      row.goal = parsed.goal;
-      row.realisedGoal = parsed.realisedGoal;
-      return;
-    }
-    if (field === 'goalStatus' && t instanceof HTMLSelectElement) {
-      const v = t.value;
-      row.goalStatus = v === 'achieved' || v === 'notMyGoal' ? v : 'active';
-      return;
-    }
-    if (t instanceof HTMLInputElement && t.type === 'number') {
-      const n = Number.parseFloat(t.value);
-      if (field === 'costToday') row[field] = Number.isFinite(n) ? n : 0;
-      else if (field === 'achieveByYear' || field === 'segmentInflationPct') {
-        row[field] = Number.isFinite(n) ? n : 0;
-      } else row[field] = t.value;
-    } else if (t instanceof HTMLInputElement) row[field] = t.value;
-    else if (t instanceof HTMLSelectElement) row[field] = t.value;
+    const { row, field, el } = getRowAndFieldFromTarget(e.target);
+    if (!row || !field || !el) return;
+    applyRowInput(row, field, el);
   });
   controls.tbody.addEventListener('change', (e) => {
-    const t = e.target;
-    if (t instanceof HTMLSelectElement && t.dataset.field === 'goalStatus' && t.dataset.rowId) {
-      const row = state.rows.find((r) => r.id === t.dataset.rowId);
-      if (row) {
-        const v = t.value;
-        row.goalStatus = v === 'achieved' || v === 'notMyGoal' ? v : 'active';
-      }
-    }
+    const { row, field, el } = getRowAndFieldFromTarget(e.target);
+    if (row && field === 'goalStatus' && el instanceof HTMLSelectElement) row.goalStatus = normaliseGoalStatusValue(el.value);
     onChange();
   });
   controls.tbody.addEventListener('click', (e) => {
