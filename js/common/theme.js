@@ -1,25 +1,34 @@
 export function initThemeToggle() {
   const root = document.documentElement;
   const storedTheme = localStorage.getItem('fire-sheet4-theme');
+  const allowedThemes = new Set([
+    'light',
+    'dark',
+    'funky',
+    'ocean',
+    'midnight',
+    'atomOneDark',
+    'morningMystery',
+  ]);
   function applyTheme(mode) {
-    if (mode === 'dark') root.setAttribute('data-theme', 'dark');
-    else root.removeAttribute('data-theme');
-    localStorage.setItem('fire-sheet4-theme', mode);
-    const btn = document.getElementById('btn-theme');
-    if (btn) btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+    const next = allowedThemes.has(mode) ? mode : 'light';
+    if (next === 'light') delete root.dataset.theme;
+    else root.dataset.theme = next;
+    localStorage.setItem('fire-sheet4-theme', next);
+
+    const select = document.getElementById('theme-select');
+    if (select && select instanceof HTMLSelectElement) select.value = next;
   }
-  if (
-    storedTheme === 'dark' ||
-    (!storedTheme && globalThis.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    applyTheme('dark');
+
+  let initial = storedTheme;
+  if (!allowedThemes.has(initial || '')) {
+    initial = globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
-  const btn = document.getElementById('btn-theme');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const dark = root.getAttribute('data-theme') === 'dark';
-      applyTheme(dark ? 'light' : 'dark');
-    });
+  applyTheme(initial || 'light');
+
+  const select = document.getElementById('theme-select');
+  if (select && select instanceof HTMLSelectElement) {
+    select.addEventListener('change', () => applyTheme(select.value));
   }
 }
 
