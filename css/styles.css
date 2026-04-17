@@ -374,15 +374,24 @@ a {
   -webkit-overflow-scrolling: touch;
 }
 
+.table-caption {
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: inherit;
+}
+
 /* Goals table: freeze first column + tune widths */
 #goals-table {
-  table-layout: fixed;
+  table-layout: auto;
+  width: max-content;
   min-width: 980px;
 }
 
 #goals-table th.col-goal,
 #goals-table td:first-child {
-  width: 360px;
+  width: 239px;
 }
 
 #goals-table th.col-inflation,
@@ -425,13 +434,6 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
-}
-
-caption {
-  text-align: left;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
 }
 
 th,
