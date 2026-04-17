@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Inflation calculator — future value, purchasing power, and depreciation." />
+    <link rel="canonical" href="https://tobu-aniket.github.io/my-fire/inflation.html" />
+    <title>My FIRE — Inflation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="wrap">
+      <header class="site-header">
+        <div>
+          <h1>My FIRE</h1>
+          <p class="lede">Inflation calculator: future value and purchasing power.</p>
+        </div>
+        <div class="header-actions">
+          <nav class="nav-links" aria-label="Pages">
+            <a class="nav-link" href="fire.html">FIRE</a>
+            <a class="nav-link" href="goals.html">Goals</a>
+            <a class="nav-link nav-link--active" href="inflation.html">Inflation</a>
+          </nav>
+          <button type="button" class="btn btn-theme" id="btn-theme" aria-pressed="false" title="Toggle dark mode">
+            ◐
+          </button>
+        </div>
+      </header>
+
+      <main id="main" class="grid-main">
+        <section class="card" aria-labelledby="inflation-inputs">
+          <h2 id="inflation-inputs">Inputs</h2>
+
+          <div class="field">
+            <label for="inf-current">Current value (₹)</label>
+            <input class="input-editable" id="inf-current" type="number" inputmode="decimal" min="0" step="1" required />
+          </div>
+
+          <div class="field">
+            <label for="inf-rate">Annual inflation rate %</label>
+            <input class="input-editable" id="inf-rate" type="number" inputmode="decimal" step="0.1" required />
+          </div>
+
+          <div class="field">
+            <label for="inf-years">Period (years)</label>
+            <input class="input-editable" id="inf-years" type="number" inputmode="decimal" min="0" step="0.5" required />
+          </div>
+
+          <div class="field-actions">
+            <button type="button" class="btn" id="inf-calc">Calculate now</button>
+          </div>
+
+          <p class="hint" style="margin: 0.75rem 0 0; font-size: 0.85rem">
+            Assumes annual compounding: <code>FV = PV × (1 + r)^n</code>.
+          </p>
+        </section>
+
+        <section class="card" aria-labelledby="inflation-results">
+          <h2 id="inflation-results">Results</h2>
+
+          <dl class="metrics">
+            <div class="metric">
+              <dt>Today's value</dt>
+              <dd id="out-inf-today">—</dd>
+            </div>
+            <div class="metric">
+              <dt>Inflation rate</dt>
+              <dd id="out-inf-rate">—</dd>
+            </div>
+            <div class="metric">
+              <dt>Cost increased</dt>
+              <dd id="out-inf-increase">—</dd>
+            </div>
+            <div class="metric">
+              <dt>Effective currency value depreciation</dt>
+              <dd id="out-inf-depr">—</dd>
+            </div>
+            <div class="metric">
+              <dt>Real value of today’s amount after period</dt>
+              <dd id="out-inf-real">—</dd>
+            </div>
+            <div class="metric">
+              <dt>Inflation-adjusted value after period</dt>
+              <dd id="out-inf-fv">—</dd>
+            </div>
+          </dl>
+
+          <p class="hint" style="margin: 0.75rem 0 0; font-size: 0.85rem">
+            “Real value” is purchasing power: <code>PV ÷ (1 + r)^n</code>.
+          </p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Static page — data is stored locally in your browser.</p>
+      </footer>
+    </div>
+    <script type="module" src="js/inflation/page.js"></script>
+  </body>
+</html>
+
