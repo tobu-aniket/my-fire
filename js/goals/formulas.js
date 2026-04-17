@@ -59,7 +59,9 @@ export function computeGoalDerived(row, expectedCagrPct, planningStartYear) {
   const cagrRate = Number(expectedCagrPct) / 100;
 
   const valueAfterInflation = fv(inflRate, dur, 0, -Number(row.costToday), 0);
-  const annualInvestment = pmt(cagrRate, dur, 0, -valueAfterInflation, 0);
+  /** When there is less than one year to the goal, treat the need as a one-shot amount (no spreading via PMT). */
+  const annualInvestment =
+    dur < 1 ? valueAfterInflation : pmt(cagrRate, dur, 0, -valueAfterInflation, 0);
   const monthlySip = annualInvestment / 12;
 
   return {
