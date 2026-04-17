@@ -1,6 +1,20 @@
 import { INITIAL_GOALS } from './initialGoalsData.js';
 import { newGoalRow } from './state.js';
 
+/** Same display string as the Goal column for a row-shaped object (matches `formatCombinedGoal` in ui.js). */
+function combinedGoalLabel(row) {
+  const g = String(row.goal ?? '').trim();
+  const r = String(row.realisedGoal ?? '').trim();
+  if (g && r) return `"${g}": ${r}`;
+  if (g) return g;
+  return r;
+}
+
+/** Labels for built-in sample goals — used to seed the Goal field datalist. */
+export function getDefaultGoalStrings() {
+  return INITIAL_GOALS.map((row) => combinedGoalLabel(row)).filter((s) => s.length > 0);
+}
+
 function isBlankStarterRow(r) {
   if (!r || typeof r !== 'object') return false;
   const goal = String(r.goal ?? '').trim();
@@ -20,19 +34,16 @@ export function shouldUseDefaultGoals(rows) {
 }
 
 /**
- * Built-in sample goals (ids + `achieved: false`).
+ * Built-in sample goals (ids + active status).
  */
 export function getDefaultGoalRows() {
   return INITIAL_GOALS.map((r) =>
     newGoalRow({
       goal: r.goal,
-      realisedGoal: r.realisedGoal,
       costToday: r.costToday,
-      needDesire: r.needDesire,
-      priority: r.priority,
       achieveByYear: r.achieveByYear,
       segmentInflationPct: r.segmentInflationPct,
-      achieved: false,
+      goalStatus: 'active',
     }),
   );
 }

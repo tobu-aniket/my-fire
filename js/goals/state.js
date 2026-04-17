@@ -18,11 +18,9 @@ export function newGoalRow(overrides) {
     goal: '',
     realisedGoal: '',
     costToday: 0,
-    needDesire: 'Need',
-    priority: 'Medium',
     achieveByYear: new Date().getFullYear() + 5,
     segmentInflationPct: 6,
-    achieved: false,
+    goalStatus: 'active',
   };
   return overrides ? { ...base, ...overrides } : base;
 }
@@ -31,6 +29,16 @@ function normalizeLoadedRow(r) {
   if (!r || typeof r !== 'object') return r;
   const row = { ...r };
   if (row.realisedGoal === undefined) row.realisedGoal = '';
+  delete row.needDesire;
+  delete row.priority;
+  if (row.goalStatus === undefined) {
+    if (row.achieved === true) row.goalStatus = 'achieved';
+    else row.goalStatus = 'active';
+  }
+  delete row.achieved;
+  if (row.goalStatus !== 'active' && row.goalStatus !== 'achieved' && row.goalStatus !== 'notMyGoal') {
+    row.goalStatus = 'active';
+  }
   return row;
 }
 

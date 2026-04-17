@@ -1,6 +1,6 @@
-import { getGoalsDefaultPlanningStartYear, GOALS_ENUMS, GOALS_STORAGE_KEYS } from '../constants.js';
+import { getGoalsDefaultPlanningStartYear, GOALS_STORAGE_KEYS } from '../constants.js';
 import { formatInr } from '../utils.js';
-import { getDefaultGoalRows, shouldUseDefaultGoals } from './defaultRows.js';
+import { getDefaultGoalRows, getDefaultGoalStrings, shouldUseDefaultGoals } from './defaultRows.js';
 import { computeGoalDerived } from './formulas.js';
 import {
   loadExpectedCagrPct,
@@ -24,56 +24,88 @@ function normalize(s) {
   return String(s ?? '').toLowerCase().trim();
 }
 
-function getFilterValue(container, key) {
-  const node = container.querySelector(`[data-filter=\"${key}\"]`);
-  if (!node) return '';
-  if (node.tagName === 'SELECT') return node.value;
-  return node.value || '';
+/** Display: `"Title": detail` when both parts exist. */
+function formatCombinedGoal(row) {
+  const g = String(row.goal ?? '').trim();
+  const r = String(row.realisedGoal ?? '').trim();
+  if (g && r) return `"${g}": ${r}`;
+  if (g) return g;
+  return r;
 }
 
-function applyFilters(rows, controls) {
-  const filterRow = controls.table.querySelector('thead .filter-row');
-
-  return rows.filter((r) => {
-    if (filterRow) {
-      const goalF = normalize(getFilterValue(filterRow, 'goal'));
-      if (goalF && !normalize(r.goal).includes(goalF)) return false;
-      const realisedF = normalize(getFilterValue(filterRow, 'realisedGoal'));
-      if (realisedF && !normalize(r.realisedGoal).includes(realisedF)) return false;
-
-      const costF = normalize(getFilterValue(filterRow, 'costToday'));
-      if (costF && !String(r.costToday).includes(costF)) return false;
-
-      const nd = getFilterValue(filterRow, 'needDesire');
-      if (nd && r.needDesire !== nd) return false;
-
-      const pr = getFilterValue(filterRow, 'priority');
-      if (pr && r.priority !== pr) return false;
-
-      const yearF = normalize(getFilterValue(filterRow, 'achieveByYear'));
-      if (yearF && !String(r.achieveByYear).includes(yearF)) return false;
-
-      const infF = normalize(getFilterValue(filterRow, 'segmentInflationPct'));
-      if (infF && !String(r.segmentInflationPct).includes(infF)) return false;
-
-      const ach = getFilterValue(filterRow, 'achieved');
-      if (ach === 'true' && !r.achieved) return false;
-      if (ach === 'false' && r.achieved) return false;
+/** Parse edited cell back into goal + realisedGoal. */
+function parseCombinedGoal(text) {
+  const s = String(text ?? '').trim();
+  const quoted = /^"([^"]*)"\s*:\s*(.*)$/.exec(s);
+  if (quoted) {
+    return { goal: quoted[1].trim(), realisedGoal: quoted[2].trim() };
+  }
+  const colon = s.indexOf(':');
+  if (colon !== -1) {
+    let left = s.slice(0, colon).trim();
+    if (left.length >= 2 && left.startsWith('"') && left.endsWith('"')) {
+      left = left.slice(1, -1).trim();
     }
-
-    return true;
-  });
+    const right = s.slice(colon + 1).trim();
+    return { goal: left, realisedGoal: right };
+  }
+  return { goal: s, realisedGoal: '' };
 }
 
-function sortRows(rows) {
+const GOAL_STATUS_OPTIONS = [
+  { value: 'active', label: 'Active' },
+  { value: 'achieved', label: 'Achieved' },
+  { value: 'notMyGoal', label: 'Not my goal' },
+];
+
+function normaliseGoalStatus(row) {
+  const s = row.goalStatus;
+  if (s === 'achieved' || s === 'notMyGoal') return s;
+  return 'active';
+}
+
+function goalStatusLabel(s) {
+  if (s === 'achieved') return 'Achieved';
+  if (s === 'notMyGoal') return 'Not my goal';
+  return 'Active';
+}
+
+/** Include in footer totals only when still planning for this goal. */
+function countsTowardTotals(row) {
+  return normaliseGoalStatus(row) === 'active';
+}
+
+const GOAL_STATUS_SORT_ORDER = { active: 0, achieved: 1, notMyGoal: 2 };
+
+function sortRows(rows, expectedCagrPct, planningStartYear) {
   if (!sortState.key || sortState.phase === 0) return rows;
   const dir = sortState.dir;
   const key = sortState.key;
   return rows
     .map((r, idx) => ({ r, idx }))
     .sort((a, b) => {
-      const av = a.r[key];
-      const bv = b.r[key];
+      let av;
+      let bv;
+      if (key === 'goalCombined') {
+        av = formatCombinedGoal(a.r);
+        bv = formatCombinedGoal(b.r);
+      } else if (
+        key === 'durationYears' ||
+        key === 'valueAfterInflation' ||
+        key === 'annualInvestment' ||
+        key === 'monthlySip'
+      ) {
+        const da = computeGoalDerived(a.r, expectedCagrPct, planningStartYear);
+        const db = computeGoalDerived(b.r, expectedCagrPct, planningStartYear);
+        av = da[key];
+        bv = db[key];
+      } else if (key === 'goalStatus') {
+        av = GOAL_STATUS_SORT_ORDER[normaliseGoalStatus(a.r)] ?? 0;
+        bv = GOAL_STATUS_SORT_ORDER[normaliseGoalStatus(b.r)] ?? 0;
+      } else {
+        av = a.r[key];
+        bv = b.r[key];
+      }
       const aNum = Number(av);
       const bNum = Number(bv);
       const bothNum = Number.isFinite(aNum) && Number.isFinite(bNum);
@@ -109,6 +141,15 @@ function ensureOption(options, v) {
   return [...options, s];
 }
 
+/** Datalist options: built-in defaults first, then previously saved custom strings, then current row labels. */
+function buildGoalOptions(defaultLabels, persistedList, rows) {
+  let out = [];
+  for (const s of defaultLabels) out = ensureOption(out, s);
+  for (const s of persistedList) out = ensureOption(out, s);
+  for (const r of rows) out = ensureOption(out, formatCombinedGoal(r));
+  return out;
+}
+
 function render(controls, state) {
   if (!controls.cagr || !controls.tbody || !controls.table) return;
 
@@ -119,8 +160,7 @@ function render(controls, state) {
   const pyRaw = Number.parseInt(String(controls.startYear?.value ?? ''), 10);
   state.planningStartYear = Number.isFinite(pyRaw) ? pyRaw : getGoalsDefaultPlanningStartYear();
 
-  const filtered = applyFilters(state.rows, controls);
-  const sorted = sortRows(filtered);
+  const sorted = sortRows(state.rows, state.expectedCagrPct, state.planningStartYear);
   updateSortUi(controls.table);
 
   controls.tbody.innerHTML = '';
@@ -133,21 +173,17 @@ function render(controls, state) {
     const derived = computeGoalDerived(row, state.expectedCagrPct, state.planningStartYear);
 
     const tr = document.createElement('tr');
-    if (row.achieved) tr.classList.add('row-achieved');
+    const gs = normaliseGoalStatus(row);
+    if (gs === 'achieved') tr.classList.add('row-achieved');
+    if (gs === 'notMyGoal') tr.classList.add('row-not-my-goal');
 
-    const goalInput = document.createElement('input');
-    goalInput.value = row.goal;
-    goalInput.className = 'filter-input';
-    goalInput.setAttribute('list', 'goals-goal-options');
-    goalInput.dataset.rowId = row.id;
-    goalInput.dataset.field = 'goal';
-
-    const realisedInput = document.createElement('input');
-    realisedInput.value = row.realisedGoal ?? '';
-    realisedInput.className = 'filter-input';
-    realisedInput.setAttribute('list', 'goals-realised-options');
-    realisedInput.dataset.rowId = row.id;
-    realisedInput.dataset.field = 'realisedGoal';
+    const combinedInput = document.createElement('input');
+    combinedInput.value = formatCombinedGoal(row);
+    combinedInput.className = 'filter-input';
+    combinedInput.setAttribute('list', 'goals-goal-options');
+    combinedInput.dataset.rowId = row.id;
+    combinedInput.dataset.field = 'combinedGoal';
+    combinedInput.title = 'Format: "Goal title": detail';
 
     const cost = document.createElement('input');
     cost.type = 'number';
@@ -156,30 +192,6 @@ function render(controls, state) {
     cost.className = 'filter-input';
     cost.dataset.rowId = row.id;
     cost.dataset.field = 'costToday';
-
-    const nd = document.createElement('select');
-    nd.className = 'filter-select';
-    GOALS_ENUMS.needDesire.forEach((o) => {
-      const opt = document.createElement('option');
-      opt.value = o;
-      opt.textContent = o;
-      if (row.needDesire === o) opt.selected = true;
-      nd.appendChild(opt);
-    });
-    nd.dataset.rowId = row.id;
-    nd.dataset.field = 'needDesire';
-
-    const pr = document.createElement('select');
-    pr.className = 'filter-select';
-    GOALS_ENUMS.priority.forEach((o) => {
-      const opt = document.createElement('option');
-      opt.value = o;
-      opt.textContent = o;
-      if (row.priority === o) opt.selected = true;
-      pr.appendChild(opt);
-    });
-    pr.dataset.rowId = row.id;
-    pr.dataset.field = 'priority';
 
     const year = document.createElement('input');
     year.type = 'number';
@@ -199,11 +211,18 @@ function render(controls, state) {
     infl.dataset.rowId = row.id;
     infl.dataset.field = 'segmentInflationPct';
 
-    const achieved = document.createElement('input');
-    achieved.type = 'checkbox';
-    achieved.checked = !!row.achieved;
-    achieved.dataset.rowId = row.id;
-    achieved.dataset.field = 'achieved';
+    const statusSel = document.createElement('select');
+    statusSel.className = 'filter-select';
+    statusSel.dataset.rowId = row.id;
+    statusSel.dataset.field = 'goalStatus';
+    const cur = normaliseGoalStatus(row);
+    GOAL_STATUS_OPTIONS.forEach((o) => {
+      const opt = document.createElement('option');
+      opt.value = o.value;
+      opt.textContent = o.label;
+      if (cur === o.value) opt.selected = true;
+      statusSel.appendChild(opt);
+    });
 
     const del = document.createElement('button');
     del.type = 'button';
@@ -213,30 +232,27 @@ function render(controls, state) {
     del.dataset.action = 'delete';
 
     function td(child, cls) {
-      const td = document.createElement('td');
-      if (cls) td.className = cls;
-      if (child instanceof Node) td.appendChild(child);
-      else td.textContent = String(child ?? '');
-      return td;
+      const tdEl = document.createElement('td');
+      if (cls) tdEl.className = cls;
+      if (child instanceof Node) tdEl.appendChild(child);
+      else tdEl.textContent = String(child ?? '');
+      return tdEl;
     }
 
-    tr.appendChild(td(goalInput));
-    tr.appendChild(td(realisedInput));
+    tr.appendChild(td(combinedInput));
     tr.appendChild(td(cost, 'num'));
-    tr.appendChild(td(nd));
-    tr.appendChild(td(pr));
     tr.appendChild(td(year, 'num'));
     tr.appendChild(td(infl, 'num'));
     tr.appendChild(td(String(derived.durationYears), 'num'));
     tr.appendChild(td(formatInr(derived.valueAfterInflation), 'num'));
     tr.appendChild(td(formatInr(derived.annualInvestment), 'num'));
     tr.appendChild(td(formatInr(derived.monthlySip), 'num'));
-    tr.appendChild(td(achieved));
+    tr.appendChild(td(statusSel));
     tr.appendChild(td(del));
 
     controls.tbody.appendChild(tr);
 
-    if (!row.achieved) {
+    if (countsTowardTotals(row)) {
       sumValue += derived.valueAfterInflation || 0;
       sumAnnual += derived.annualInvestment || 0;
       sumMonthly += derived.monthlySip || 0;
@@ -251,13 +267,9 @@ function render(controls, state) {
   saveExpectedCagrPct(state.expectedCagrPct);
   savePlanningStartYear(state.planningStartYear);
 
-  // Update option lists from current content
-  state.goalOptions = sorted.reduce((opts, r) => ensureOption(opts, r.goal), state.goalOptions);
-  state.realisedOptions = sorted.reduce((opts, r) => ensureOption(opts, r.realisedGoal), state.realisedOptions);
+  state.goalOptions = buildGoalOptions(getDefaultGoalStrings(), state.goalOptions, sorted);
   saveOptions(GOALS_STORAGE_KEYS.goalOptions, state.goalOptions);
-  saveOptions(GOALS_STORAGE_KEYS.realisedOptions, state.realisedOptions);
   controls.goalDatalist.innerHTML = state.goalOptions.map((o) => `<option value="${escapeHtml(o)}"></option>`).join('');
-  controls.realisedDatalist.innerHTML = state.realisedOptions.map((o) => `<option value="${escapeHtml(o)}"></option>`).join('');
 }
 
 function escapeHtml(s) {
@@ -283,7 +295,6 @@ export function initGoalsTab() {
     sumAnnual: document.getElementById('goals-sum-annual'),
     sumMonthly: document.getElementById('goals-sum-monthly'),
     goalDatalist: null,
-    realisedDatalist: null,
   };
 
   if (!controls.table || !controls.tbody || !controls.cagr || !controls.startYear) {
@@ -293,12 +304,8 @@ export function initGoalsTab() {
 
   const goalDatalist = document.createElement('datalist');
   goalDatalist.id = 'goals-goal-options';
-  const realisedDatalist = document.createElement('datalist');
-  realisedDatalist.id = 'goals-realised-options';
   document.body.appendChild(goalDatalist);
-  document.body.appendChild(realisedDatalist);
   controls.goalDatalist = goalDatalist;
-  controls.realisedDatalist = realisedDatalist;
 
   const hadPlanningStartKey = localStorage.getItem(GOALS_STORAGE_KEYS.planningStartYear) != null;
   const loadedRows = loadGoalsRows();
@@ -312,7 +319,6 @@ export function initGoalsTab() {
     planningStartYear,
     rows: loadedRows,
     goalOptions: loadOptions(GOALS_STORAGE_KEYS.goalOptions, []),
-    realisedOptions: loadOptions(GOALS_STORAGE_KEYS.realisedOptions, []),
   };
 
   if (shouldUseDefaultGoals(state.rows)) state.rows = getDefaultGoalRows();
@@ -325,10 +331,6 @@ export function initGoalsTab() {
 
   controls.cagr.addEventListener('input', onChange);
   controls.startYear.addEventListener('input', onChange);
-  controls.table.querySelectorAll('thead .filter-row .filter-input, thead .filter-row .filter-select').forEach((n) => {
-    n.addEventListener('input', onChange);
-    n.addEventListener('change', onChange);
-  });
 
   if (controls.addRow) {
     controls.addRow.addEventListener('click', () => {
@@ -339,25 +341,22 @@ export function initGoalsTab() {
 
   if (controls.exportCsv) {
     controls.exportCsv.addEventListener('click', () => {
-      const visible = sortRows(applyFilters(state.rows, controls));
+      const visible = sortRows(state.rows, state.expectedCagrPct, state.planningStartYear);
       const lines = [
-        ['Goal', 'Realised', 'CostToday', 'NeedDesire', 'Priority', 'AchieveByYear', 'InflationPct', 'DurationYears', 'ValueAfterInflation', 'AnnualInvestment', 'MonthlySip', 'Achieved'],
+        ['Goal', 'CostToday', 'AchieveByYear', 'InflationPct', 'DurationYears', 'ValueAfterInflation', 'AnnualInvestment', 'MonthlySip', 'Status'],
       ];
       visible.forEach((r) => {
         const d = computeGoalDerived(r, state.expectedCagrPct, state.planningStartYear);
         lines.push([
-          r.goal,
-          r.realisedGoal,
+          formatCombinedGoal(r),
           r.costToday,
-          r.needDesire,
-          r.priority,
           r.achieveByYear,
           r.segmentInflationPct,
           d.durationYears,
           Math.round(d.valueAfterInflation),
           Math.round(d.annualInvestment),
           Math.round(d.monthlySip),
-          r.achieved,
+          goalStatusLabel(normaliseGoalStatus(r)),
         ]);
       });
       const csv = lines.map((row) => row.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(',')).join('\n');
@@ -369,7 +368,6 @@ export function initGoalsTab() {
     controls.print.addEventListener('click', () => globalThis.print());
   }
 
-  // Sorting
   controls.table.querySelectorAll('thead th[data-sort] .sort-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const th = btn.closest('th');
@@ -393,7 +391,6 @@ export function initGoalsTab() {
     });
   });
 
-  // Editable table changes (event delegation)
   controls.tbody.addEventListener('input', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -402,8 +399,18 @@ export function initGoalsTab() {
     if (!rowId || !field) return;
     const row = state.rows.find((r) => r.id === rowId);
     if (!row) return;
-    if (t instanceof HTMLInputElement && t.type === 'checkbox') row[field] = t.checked;
-    else if (t instanceof HTMLInputElement && t.type === 'number') {
+    if (field === 'combinedGoal' && t instanceof HTMLInputElement) {
+      const parsed = parseCombinedGoal(t.value);
+      row.goal = parsed.goal;
+      row.realisedGoal = parsed.realisedGoal;
+      return;
+    }
+    if (field === 'goalStatus' && t instanceof HTMLSelectElement) {
+      const v = t.value;
+      row.goalStatus = v === 'achieved' || v === 'notMyGoal' ? v : 'active';
+      return;
+    }
+    if (t instanceof HTMLInputElement && t.type === 'number') {
       const n = Number.parseFloat(t.value);
       if (field === 'costToday') row[field] = Number.isFinite(n) ? n : 0;
       else if (field === 'achieveByYear' || field === 'segmentInflationPct') {
@@ -412,7 +419,17 @@ export function initGoalsTab() {
     } else if (t instanceof HTMLInputElement) row[field] = t.value;
     else if (t instanceof HTMLSelectElement) row[field] = t.value;
   });
-  controls.tbody.addEventListener('change', onChange);
+  controls.tbody.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t instanceof HTMLSelectElement && t.dataset.field === 'goalStatus' && t.dataset.rowId) {
+      const row = state.rows.find((r) => r.id === t.dataset.rowId);
+      if (row) {
+        const v = t.value;
+        row.goalStatus = v === 'achieved' || v === 'notMyGoal' ? v : 'active';
+      }
+    }
+    onChange();
+  });
   controls.tbody.addEventListener('click', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -428,4 +445,3 @@ export function initGoalsTab() {
 }
 
 initGoalsTab._didInit = false;
-

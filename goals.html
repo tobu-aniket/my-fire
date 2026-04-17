@@ -39,7 +39,7 @@
             <div>
               <h2 id="goals-heading">Goals</h2>
               <p class="hint" style="margin: 0.25rem 0 0; font-size: 0.85rem">
-                Add rows, set inflation and target year, and see the required investment (annual + monthly SIP).
+                Goal format: <code>"Title": detail</code> (e.g. <code>"Foreign Trip 1": Sri lanka</code>). Add rows, set inflation and year, and see required investment.
               </p>
             </div>
             <div class="goals-actions">
@@ -65,40 +65,24 @@
               <caption>Goals table</caption>
               <thead>
                 <tr>
-                  <th scope="col" data-sort="goal" aria-sort="none"><button type="button" class="sort-btn">Goal</button></th>
-                  <th scope="col" data-sort="realisedGoal" aria-sort="none"><button type="button" class="sort-btn">Realised</button></th>
+                  <th scope="col" data-sort="goalCombined" aria-sort="none"><button type="button" class="sort-btn">Goal</button></th>
                   <th scope="col" class="num" data-sort="costToday" aria-sort="none"><button type="button" class="sort-btn">Cost today (₹)</button></th>
-                  <th scope="col" data-sort="needDesire" aria-sort="none"><button type="button" class="sort-btn">Need/Desire</button></th>
-                  <th scope="col" data-sort="priority" aria-sort="none"><button type="button" class="sort-btn">Priority</button></th>
                   <th scope="col" class="num" data-sort="achieveByYear" aria-sort="none"><button type="button" class="sort-btn">Achieve by</button></th>
                   <th scope="col" class="num" data-sort="segmentInflationPct" aria-sort="none"><button type="button" class="sort-btn">Inflation %</button></th>
                   <th scope="col" class="num" data-sort="durationYears" aria-sort="none"><button type="button" class="sort-btn">Duration</button></th>
                   <th scope="col" class="num" data-sort="valueAfterInflation" aria-sort="none"><button type="button" class="sort-btn">Value after inflation</button></th>
                   <th scope="col" class="num" data-sort="annualInvestment" aria-sort="none"><button type="button" class="sort-btn">Annual investment</button></th>
                   <th scope="col" class="num" data-sort="monthlySip" aria-sort="none"><button type="button" class="sort-btn">Monthly SIP</button></th>
-                  <th scope="col" data-sort="achieved" aria-sort="none"><button type="button" class="sort-btn">Achieved</button></th>
+                  <th scope="col" data-sort="goalStatus" aria-sort="none">
+                    <button type="button" class="sort-btn">Achieved / Not my goal</button>
+                  </th>
                   <th scope="col">Actions</th>
-                </tr>
-                <tr class="filter-row">
-                  <th scope="col"><input class="filter-input" data-filter="goal" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="realisedGoal" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="costToday" placeholder="Filter" /></th>
-                  <th scope="col"><select class="filter-select" data-filter="needDesire"><option value="">All</option><option>Need</option><option>Desire</option></select></th>
-                  <th scope="col"><select class="filter-select" data-filter="priority"><option value="">All</option><option>High</option><option>Medium</option><option>Low</option></select></th>
-                  <th scope="col"><input class="filter-input" data-filter="achieveByYear" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="segmentInflationPct" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="durationYears" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="valueAfterInflation" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="annualInvestment" placeholder="Filter" /></th>
-                  <th scope="col"><input class="filter-input" data-filter="monthlySip" placeholder="Filter" /></th>
-                  <th scope="col"><select class="filter-select" data-filter="achieved"><option value="">All</option><option value="false">Not achieved</option><option value="true">Achieved</option></select></th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody id="goals-tbody"></tbody>
               <tfoot>
                 <tr>
-                  <td colspan="8" class="num"><strong>Totals (visible, not achieved)</strong></td>
+                  <td colspan="5" class="num"><strong>Totals (active goals only)</strong></td>
                   <td class="num" id="goals-sum-value">—</td>
                   <td class="num" id="goals-sum-annual">—</td>
                   <td class="num" id="goals-sum-monthly">—</td>
@@ -117,4 +101,3 @@
     <script type="module" src="js/goals/page.js"></script>
   </body>
 </html>
-
