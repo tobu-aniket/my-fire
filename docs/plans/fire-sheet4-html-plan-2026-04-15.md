@@ -7,7 +7,7 @@ todos:
     content: Add docs/excel-workbook-overview.md describing all four sheets (Goals, Retirement, Sheet3, Sheet4) with purpose, inputs/outputs, and formula summaries
     status: pending
   - id: js-engine
-    content: "Implement JS modules: js/index.js entrypoint + constants/utils/formulas; URL sync via readable query params; localStorage persist + reset; edge-case guards"
+    content: "Implement JS modules: js/fire/index.js + js/goals/page.js entrypoints; shared constants/utils/formulas; URL sync via readable query params; localStorage persist + reset; edge-case guards"
     status: pending
   - id: html-css
     content: "Build HTML + CSS: inputs (green borders), FIRE grid, SWR table, custom CAGR, column M hints, dark mode, print/export hooks, a11y"
@@ -139,7 +139,8 @@ flowchart LR
 
 - [`index.html`](../../index.html) or [`sheet4-fire.html`](../../sheet4-fire.html) — structure, semantic sections (inputs, summary, FIRE types, SWR table, custom CAGR).
 - [`css/styles.css`](../../css/styles.css) — typography, spacing, card layout, responsive tables, **green border** on inputs (CSS `outline` or `box-shadow` matching `#38761D`).
-- [`js/index.js`](../../js/index.js) — browser entrypoint + UI wiring
+- [`fire.html`](../../fire.html) + [`js/fire/index.js`](../../js/fire/index.js) — FIRE calculator page + entrypoint
+- [`goals.html`](../../goals.html) + [`js/goals/page.js`](../../js/goals/page.js) — Goals page + entrypoint
 - [`js/constants.js`](../../js/constants.js) — defaults, labels, definitions, URL param map
 - [`js/utils.js`](../../js/utils.js) — formatting, URL parsing, storage helpers
 - [`js/formulas.js`](../../js/formulas.js) — pure formula engine (`compute`)

@@ -23,252 +23,30 @@
       <header class="site-header">
         <div>
           <h1>My FIRE</h1>
-          <p class="lede">
-            Build FIRE targets and plan goals with inflation and expected returns.
-          </p>
+          <p class="lede">Simple planning tools for FIRE and goals.</p>
         </div>
         <div class="header-actions">
-          <nav class="tabs" aria-label="Sections">
-            <button type="button" class="tab-btn" data-tab="fire" aria-current="page">FIRE</button>
-            <button type="button" class="tab-btn" data-tab="goals">Goals</button>
+          <nav class="nav-links" aria-label="Pages">
+            <a class="nav-link" href="fire.html">FIRE</a>
+            <a class="nav-link" href="goals.html">Goals</a>
           </nav>
-          <button type="button" class="btn btn-theme" id="btn-theme" aria-pressed="false" title="Toggle dark mode">
-            ◐
-          </button>
         </div>
       </header>
 
       <main id="main">
-        <section id="panel-fire" class="tab-panel" data-tab-panel="fire">
-          <div class="grid-main">
-        <section class="card" aria-labelledby="inputs-heading">
-          <h2 id="inputs-heading">Inputs</h2>
-          <p class="hint" style="margin: -0.5rem 0 1rem; font-size: 0.8rem; color: var(--muted)">
-            Green-bordered fields match editable cells in Excel.
-          </p>
-          <div class="field">
-            <label for="in-c2">Monthly expense (₹)</label>
-            <input class="input-editable" id="in-c2" type="number" inputmode="decimal" min="0" step="1" required />
+        <section class="card">
+          <h2>Welcome</h2>
+          <p class="lede" style="max-width: 68ch">Use the tools below. Your data is stored locally in your browser.</p>
+          <div class="field-actions" style="margin-top: 1rem">
+            <a class="btn" href="fire.html">Open FIRE calculator</a>
+            <a class="btn" href="goals.html">Open Goals planner</a>
           </div>
-          <div class="field">
-            <label for="in-f2">Years to retirement</label>
-            <input class="input-editable" id="in-f2" type="number" inputmode="decimal" min="0" max="80" step="0.1" required />
-          </div>
-          <div class="field">
-            <label for="in-c4">Start year</label>
-            <input class="input-editable" id="in-c4" type="number" inputmode="numeric" min="1900" max="2200" step="1" required />
-          </div>
-          <div class="field">
-            <label for="in-f4">Inflation % (annual)</label>
-            <input class="input-editable" id="in-f4" type="number" inputmode="decimal" step="0.1" required />
-          </div>
-          <div class="field">
-            <label for="in-f7">Expected CAGR % (Coast FIRE)</label>
-            <input class="input-editable" id="in-f7" type="number" inputmode="decimal" step="0.1" required />
-          </div>
-          <div class="field-actions">
-            <button type="button" class="btn" id="btn-reset">Reset to defaults</button>
-          </div>
-          <div class="share-row">
-            <label for="share-link">Share (readable URL params)</label>
-            <input id="share-link" class="share-url" type="text" readonly aria-readonly="true" />
-            <button type="button" class="btn" id="btn-copy-url">Copy link</button>
-          </div>
-        </section>
-
-        <div>
-          <section class="card" aria-labelledby="summary-heading">
-            <h2 id="summary-heading">Summary</h2>
-            <dl class="metrics">
-              <div class="metric">
-                <dt>Annual expense today</dt>
-                <dd id="out-c3">—</dd>
-              </div>
-              <div class="metric">
-                <dt>Retirement year</dt>
-                <dd id="out-c5">—</dd>
-              </div>
-              <div class="metric">
-                <dt>Monthly expense at retirement</dt>
-                <dd id="out-c7">—</dd>
-              </div>
-              <div class="metric">
-                <dt>Annual expense at retirement</dt>
-                <dd id="out-c8">—</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section class="card" style="margin-top: 1.5rem" aria-labelledby="fire-heading">
-            <h2 id="fire-heading">FIRE types</h2>
-            <p id="std-fire-note" class="hint" style="margin: -0.25rem 0 0.75rem; font-size: 0.85rem"></p>
-            <div class="table-wrap table-wrap--fire">
-              <table id="fire-table">
-                <caption>FIRE corpus targets</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" data-sort="label" aria-sort="none">
-                      <button type="button" class="sort-btn">Type</button>
-                    </th>
-                    <th scope="col" data-sort="formula" aria-sort="none">
-                      <button type="button" class="sort-btn">Formula (vs F)</button>
-                    </th>
-                    <th scope="col" class="num" data-sort="corpus" aria-sort="none">
-                      <button type="button" class="sort-btn">Corpus (₹)</button>
-                    </th>
-                    <th
-                      scope="col"
-                      class="num"
-                      title="Largest Indian unit, up to 2 decimal places"
-                      data-sort="approx"
-                      aria-sort="none"
-                    >
-                      <button type="button" class="sort-btn">Approx. (Cr / lakhs / …)</button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="fire-tbody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <section class="card" style="margin-top: 1.5rem" aria-labelledby="swr-heading">
-            <div class="toolbar">
-              <button type="button" class="btn" id="btn-copy-csv">Copy SWR table as CSV</button>
-            </div>
-            <h2 id="swr-heading" class="section-title">Withdrawal rate (SWR) table</h2>
-            <div class="table-wrap">
-              <table>
-                <caption>Corpus by safe withdrawal rate</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">SWR %</th>
-                    <th scope="col" class="num">Multiplier</th>
-                    <th scope="col" class="num">Annual expense</th>
-                    <th scope="col" class="num">Total corpus</th>
-                    <th
-                      scope="col"
-                      class="num"
-                      title="Largest Indian unit, up to 2 decimal places"
-                    >
-                      Approx. (Cr / lakhs / …)
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="swr-tbody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <section class="card custom-card" aria-labelledby="custom-heading">
-            <h2 id="custom-heading">Custom expected CAGR</h2>
-            <p class="hint" style="margin-top: -0.35rem; font-size: 0.85rem">
-              Spread = Expected CAGR (custom) − inflation. Multiplier = 100 ÷ spread × annual expense at retirement.
-            </p>
-            <div class="field field--custom">
-              <label for="in-a22">Expected CAGR % (custom row)</label>
-              <span class="hint">Compared to inflation for the multiplier below. Not in the share link — opening a shared URL uses the Coast FIRE “Expected CAGR” value above as the default here.</span>
-              <input class="input-editable" id="in-a22" type="number" inputmode="decimal" step="0.1" required />
-            </div>
-            <div id="custom-block" class="custom-grid">
-              <div><span>Spread (CAGR − inflation)</span> <span class="mono" id="out-b23">—</span></div>
-              <div><span>Multiplier</span> <span class="mono" id="out-c23">—</span></div>
-              <div><span>Annual expense at retirement</span> <span class="mono" id="out-d23">—</span></div>
-              <div><span>Implied corpus</span> <span class="mono" id="out-e23">—</span></div>
-              <div><span>Approx. (Cr / lakhs / …)</span> <span class="mono" id="out-g23">—</span></div>
-            </div>
-            <div id="custom-warning" class="warning" hidden aria-live="polite"></div>
-          </section>
-        </div>
-          </div>
-        </section>
-
-        <section id="panel-goals" class="tab-panel" data-tab-panel="goals" hidden>
-          <section class="card" aria-labelledby="goals-heading">
-            <div class="goals-head">
-              <div>
-                <h2 id="goals-heading">Goals</h2>
-                <p class="hint" style="margin: 0.25rem 0 0; font-size: 0.85rem">
-                  Add rows, set inflation and target year, and see the required investment (annual + monthly SIP).
-                </p>
-              </div>
-              <div class="goals-actions">
-                <button type="button" class="btn" id="goals-add-row">Add row</button>
-                <button type="button" class="btn" id="goals-export-csv">Export CSV</button>
-                <button type="button" class="btn" id="goals-print">Print</button>
-              </div>
-            </div>
-
-            <div class="goals-controls">
-              <div class="field" style="margin: 0">
-                <label for="goals-cagr">Expected CAGR %</label>
-                <input class="input-editable" id="goals-cagr" type="number" inputmode="decimal" step="0.1" required />
-              </div>
-              <div class="field" style="margin: 0">
-                <label for="goals-search">Search</label>
-                <input id="goals-search" class="share-url" type="text" placeholder="Type to search…" />
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table id="goals-table">
-                <caption>Goals table</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" data-sort="goal" aria-sort="none"><button type="button" class="sort-btn">Goal</button></th>
-                    <th scope="col" data-sort="realisedGoal" aria-sort="none"><button type="button" class="sort-btn">Realised</button></th>
-                    <th scope="col" class="num" data-sort="costToday" aria-sort="none"><button type="button" class="sort-btn">Cost today (₹)</button></th>
-                    <th scope="col" data-sort="needDesire" aria-sort="none"><button type="button" class="sort-btn">Need/Desire</button></th>
-                    <th scope="col" data-sort="priority" aria-sort="none"><button type="button" class="sort-btn">Priority</button></th>
-                    <th scope="col" class="num" data-sort="achieveByYear" aria-sort="none"><button type="button" class="sort-btn">Achieve by</button></th>
-                    <th scope="col" class="num" data-sort="segmentInflationPct" aria-sort="none"><button type="button" class="sort-btn">Inflation %</button></th>
-                    <th scope="col" class="num" data-sort="durationYears" aria-sort="none"><button type="button" class="sort-btn">Duration</button></th>
-                    <th scope="col" class="num" data-sort="valueAfterInflation" aria-sort="none"><button type="button" class="sort-btn">Value after inflation</button></th>
-                    <th scope="col" class="num" data-sort="annualInvestment" aria-sort="none"><button type="button" class="sort-btn">Annual investment</button></th>
-                    <th scope="col" class="num" data-sort="monthlySip" aria-sort="none"><button type="button" class="sort-btn">Monthly SIP</button></th>
-                    <th scope="col" data-sort="achieved" aria-sort="none"><button type="button" class="sort-btn">Achieved</button></th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                  <tr class="filter-row">
-                    <th scope="col"><input class="filter-input" data-filter="goal" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="realisedGoal" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="costToday" placeholder="Filter" /></th>
-                    <th scope="col"><select class="filter-select" data-filter="needDesire"><option value="">All</option><option>Need</option><option>Desire</option></select></th>
-                    <th scope="col"><select class="filter-select" data-filter="priority"><option value="">All</option><option>High</option><option>Medium</option><option>Low</option></select></th>
-                    <th scope="col"><input class="filter-input" data-filter="achieveByYear" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="segmentInflationPct" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="durationYears" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="valueAfterInflation" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="annualInvestment" placeholder="Filter" /></th>
-                    <th scope="col"><input class="filter-input" data-filter="monthlySip" placeholder="Filter" /></th>
-                    <th scope="col"><select class="filter-select" data-filter="achieved"><option value="">All</option><option value="false">Not achieved</option><option value="true">Achieved</option></select></th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody id="goals-tbody"></tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="8" class="num"><strong>Totals (visible, not achieved)</strong></td>
-                    <td class="num" id="goals-sum-value">—</td>
-                    <td class="num" id="goals-sum-annual">—</td>
-                    <td class="num" id="goals-sum-monthly">—</td>
-                    <td colspan="2"></td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </section>
         </section>
       </main>
 
       <footer class="site-footer">
-        <p>
-          Static page — main inputs are stored in this browser and shared as readable URL parameters
-          (monthlyExpense, yearsToRetirement, startYear, inflationPct, expectedCagrPct). Custom-row CAGR is not
-          shared and defaults from Coast FIRE CAGR when you open a link.
-        </p>
+        <p>Static site — no sign-in, data stays in your browser.</p>
       </footer>
     </div>
-    <script type="module" src="js/index.js"></script>
   </body>
 </html>
