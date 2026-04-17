@@ -67,18 +67,18 @@
               <caption>Goals table</caption>
               <thead>
                 <tr>
-                  <th scope="col" data-sort="goalCombined" aria-sort="none"><button type="button" class="sort-btn">Goal</button></th>
+                  <th scope="col" class="col-goal" data-sort="goalCombined" aria-sort="none"><button type="button" class="sort-btn">Goal</button></th>
                   <th scope="col" class="num" data-sort="costToday" aria-sort="none"><button type="button" class="sort-btn">Cost today (₹)</button></th>
                   <th scope="col" class="num" data-sort="achieveByYear" aria-sort="none"><button type="button" class="sort-btn">Achieve by</button></th>
-                  <th scope="col" class="num" data-sort="segmentInflationPct" aria-sort="none"><button type="button" class="sort-btn">Inflation %</button></th>
-                  <th scope="col" class="num" data-sort="durationYears" aria-sort="none"><button type="button" class="sort-btn">Duration</button></th>
+                  <th scope="col" class="num col-inflation" data-sort="segmentInflationPct" aria-sort="none"><button type="button" class="sort-btn">Inflation %</button></th>
+                  <th scope="col" class="num col-duration" data-sort="durationYears" aria-sort="none"><button type="button" class="sort-btn">Duration</button></th>
                   <th scope="col" class="num" data-sort="valueAfterInflation" aria-sort="none"><button type="button" class="sort-btn">Value after inflation</button></th>
                   <th scope="col" class="num" data-sort="annualInvestment" aria-sort="none"><button type="button" class="sort-btn">Annual investment</button></th>
                   <th scope="col" class="num" data-sort="monthlySip" aria-sort="none"><button type="button" class="sort-btn">Monthly SIP</button></th>
                   <th scope="col" data-sort="goalStatus" aria-sort="none">
                     <button type="button" class="sort-btn">Achieved / Not my goal</button>
                   </th>
-                  <th scope="col">Actions</th>
+                  <th scope="col" class="col-actions" title="Actions">🗑</th>
                 </tr>
               </thead>
               <tbody id="goals-tbody"></tbody>

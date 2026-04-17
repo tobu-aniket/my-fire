@@ -374,6 +374,53 @@ a {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Goals table: freeze first column + tune widths */
+#goals-table {
+  table-layout: fixed;
+  min-width: 980px;
+}
+
+#goals-table th.col-goal,
+#goals-table td:first-child {
+  width: 360px;
+}
+
+#goals-table th.col-inflation,
+#goals-table td:nth-child(4) {
+  width: 110px;
+}
+
+#goals-table th.col-duration,
+#goals-table td:nth-child(5) {
+  width: 95px;
+}
+
+#goals-table th.col-actions,
+#goals-table td:last-child {
+  width: 56px;
+  text-align: center;
+}
+
+/* Freeze Goal (first) column while horizontally scrolling the table */
+#goals-table th:first-child,
+#goals-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+#goals-table th:first-child {
+  z-index: 3;
+}
+
+.btn.btn-icon {
+  padding: 0.35rem 0.55rem;
+  line-height: 1;
+  min-width: 2.25rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

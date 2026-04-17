@@ -221,7 +221,7 @@ function render(controls, state) {
     combinedInput.setAttribute('list', 'goals-goal-options');
     combinedInput.dataset.rowId = row.id;
     combinedInput.dataset.field = 'combinedGoal';
-    combinedInput.title = 'Format: "Goal title": detail';
+    combinedInput.title = combinedInput.value;
 
     const cost = document.createElement('input');
     cost.type = 'number';
@@ -265,7 +265,10 @@ function render(controls, state) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'btn';
-    del.textContent = 'Delete';
+    del.classList.add('btn-icon');
+    del.setAttribute('aria-label', 'Delete row');
+    del.title = 'Delete row';
+    del.textContent = '🗑';
     del.dataset.rowId = row.id;
     del.dataset.action = 'delete';
 
