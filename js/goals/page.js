@@ -1,4 +1,5 @@
 import { initThemeToggle } from '../common/theme.js';
+import { initResetAll } from '../common/reset.js';
 import { initGoalsTab } from './ui.js';
 
 const REQUIRED_IDS = ['goals-table', 'goals-tbody', 'goals-cagr', 'goals-start-year'];
@@ -34,6 +35,7 @@ function initGoalsWhenReady(attempt = 0) {
 
 function init() {
   initThemeToggle();
+  initResetAll();
   queueMicrotask(() => initGoalsWhenReady(0));
 }
 

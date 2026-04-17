@@ -1,6 +1,7 @@
 import { DEFAULTS, FIRE_TYPE_DEFINITIONS, INFO_ICON_SVG } from '../constants.js';
 import { compute } from '../formulas.js';
 import { initThemeToggle } from '../common/theme.js';
+import { initResetAll } from '../common/reset.js';
 import {
   decodeHash,
   decodeQuery,
@@ -228,6 +229,7 @@ function recalc() {
 
 function init() {
   initThemeToggle();
+  initResetAll();
   const fromStore = loadFromStorage();
   const fromUrl = loadFromUrl();
   const initial = fromUrl || fromStore || DEFAULTS;

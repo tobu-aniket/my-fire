@@ -1,4 +1,5 @@
 import { initThemeToggle } from '../common/theme.js';
+import { initResetAll } from '../common/reset.js';
 import { formatApproxInr } from '../utils.js';
 
 const STORAGE_KEY = 'inflation_calc_v1';
@@ -64,6 +65,7 @@ function setText(id, value) {
 
 function init() {
   initThemeToggle();
+  initResetAll();
 
   const inputCurrent = /** @type {HTMLInputElement|null} */ (document.getElementById('inf-current'));
   const inputRate = /** @type {HTMLInputElement|null} */ (document.getElementById('inf-rate'));
