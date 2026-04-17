@@ -414,6 +414,13 @@ a {
   width: 80px;
 }
 
+#goals-table th:nth-child(6),
+#goals-table td:nth-child(6),
+#goals-table th:nth-child(7),
+#goals-table td:nth-child(7) {
+  width: 144px;
+}
+
 #goals-table th.col-actions,
 #goals-table td:last-child {
   width: 56px;
@@ -452,6 +459,17 @@ td {
   text-align: left;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+}
+
+/* Subtle column separators for readability (goals table only). */
+#goals-table th + th,
+#goals-table td + td {
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='dark'] #goals-table th + th,
+[data-theme='dark'] #goals-table td + td {
+  border-left-color: rgba(255, 255, 255, 0.08);
 }
 
 th {
