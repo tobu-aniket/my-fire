@@ -1,14 +1,17 @@
-import { GOALS_ENUMS, GOALS_STORAGE_KEYS } from '../constants.js';
+import { getGoalsDefaultPlanningStartYear, GOALS_ENUMS, GOALS_STORAGE_KEYS } from '../constants.js';
 import { formatInr } from '../utils.js';
+import { getDefaultGoalRows, shouldUseDefaultGoals } from './defaultRows.js';
 import { computeGoalDerived } from './formulas.js';
 import {
   loadExpectedCagrPct,
   loadGoalsRows,
   loadOptions,
+  loadPlanningStartYear,
   newGoalRow,
   saveExpectedCagrPct,
   saveGoalsRows,
   saveOptions,
+  savePlanningStartYear,
 } from './state.js';
 
 const sortState = {
@@ -29,25 +32,9 @@ function getFilterValue(container, key) {
 }
 
 function applyFilters(rows, controls) {
-  const search = normalize(controls.search.value);
   const filterRow = controls.table.querySelector('thead .filter-row');
 
   return rows.filter((r) => {
-    if (search) {
-      const hay = [
-        r.goal,
-        r.realisedGoal,
-        r.needDesire,
-        r.priority,
-        r.costToday,
-        r.achieveByYear,
-        r.segmentInflationPct,
-      ]
-        .join(' ')
-        .toLowerCase();
-      if (!hay.includes(search)) return false;
-    }
-
     if (filterRow) {
       const goalF = normalize(getFilterValue(filterRow, 'goal'));
       if (goalF && !normalize(r.goal).includes(goalF)) return false;
@@ -123,9 +110,14 @@ function ensureOption(options, v) {
 }
 
 function render(controls, state) {
+  if (!controls.cagr || !controls.tbody || !controls.table) return;
+
   const currentYear = new Date().getFullYear();
   const expectedCagrPct = Number(controls.cagr.value || state.expectedCagrPct);
   state.expectedCagrPct = Number.isFinite(expectedCagrPct) ? expectedCagrPct : state.expectedCagrPct;
+
+  const pyRaw = Number.parseInt(String(controls.startYear?.value ?? ''), 10);
+  state.planningStartYear = Number.isFinite(pyRaw) ? pyRaw : getGoalsDefaultPlanningStartYear();
 
   const filtered = applyFilters(state.rows, controls);
   const sorted = sortRows(filtered);
@@ -138,7 +130,7 @@ function render(controls, state) {
   let sumMonthly = 0;
 
   sorted.forEach((row) => {
-    const derived = computeGoalDerived(row, state.expectedCagrPct, currentYear);
+    const derived = computeGoalDerived(row, state.expectedCagrPct, state.planningStartYear);
 
     const tr = document.createElement('tr');
     if (row.achieved) tr.classList.add('row-achieved');
@@ -151,7 +143,7 @@ function render(controls, state) {
     goalInput.dataset.field = 'goal';
 
     const realisedInput = document.createElement('input');
-    realisedInput.value = row.realisedGoal;
+    realisedInput.value = row.realisedGoal ?? '';
     realisedInput.className = 'filter-input';
     realisedInput.setAttribute('list', 'goals-realised-options');
     realisedInput.dataset.rowId = row.id;
@@ -257,14 +249,15 @@ function render(controls, state) {
 
   saveGoalsRows(state.rows);
   saveExpectedCagrPct(state.expectedCagrPct);
+  savePlanningStartYear(state.planningStartYear);
 
   // Update option lists from current content
   state.goalOptions = sorted.reduce((opts, r) => ensureOption(opts, r.goal), state.goalOptions);
   state.realisedOptions = sorted.reduce((opts, r) => ensureOption(opts, r.realisedGoal), state.realisedOptions);
   saveOptions(GOALS_STORAGE_KEYS.goalOptions, state.goalOptions);
   saveOptions(GOALS_STORAGE_KEYS.realisedOptions, state.realisedOptions);
-  controls.goalDatalist.innerHTML = state.goalOptions.map((o) => `<option value=\"${escapeHtml(o)}\"></option>`).join('');
-  controls.realisedDatalist.innerHTML = state.realisedOptions.map((o) => `<option value=\"${escapeHtml(o)}\"></option>`).join('');
+  controls.goalDatalist.innerHTML = state.goalOptions.map((o) => `<option value="${escapeHtml(o)}"></option>`).join('');
+  controls.realisedDatalist.innerHTML = state.realisedOptions.map((o) => `<option value="${escapeHtml(o)}"></option>`).join('');
 }
 
 function escapeHtml(s) {
@@ -272,16 +265,15 @@ function escapeHtml(s) {
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
-    .replaceAll('\"', '&quot;')
-    .replaceAll(\"'\", '&#39;');
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 export function initGoalsTab() {
   if (initGoalsTab._didInit) return;
-  initGoalsTab._didInit = true;
   const controls = {
     cagr: document.getElementById('goals-cagr'),
-    search: document.getElementById('goals-search'),
+    startYear: document.getElementById('goals-start-year'),
     addRow: document.getElementById('goals-add-row'),
     exportCsv: document.getElementById('goals-export-csv'),
     print: document.getElementById('goals-print'),
@@ -294,9 +286,11 @@ export function initGoalsTab() {
     realisedDatalist: null,
   };
 
-  if (!controls.table) return;
+  if (!controls.table || !controls.tbody || !controls.cagr || !controls.startYear) {
+    console.error('Goals: missing required elements (table, tbody, cagr, or start year).');
+    return;
+  }
 
-  // datalists for custom options
   const goalDatalist = document.createElement('datalist');
   goalDatalist.id = 'goals-goal-options';
   const realisedDatalist = document.createElement('datalist');
@@ -306,58 +300,74 @@ export function initGoalsTab() {
   controls.goalDatalist = goalDatalist;
   controls.realisedDatalist = realisedDatalist;
 
+  const hadPlanningStartKey = localStorage.getItem(GOALS_STORAGE_KEYS.planningStartYear) != null;
+  const loadedRows = loadGoalsRows();
+
+  const planningStartYear = hadPlanningStartKey
+    ? loadPlanningStartYear()
+    : getGoalsDefaultPlanningStartYear();
+
   const state = {
     expectedCagrPct: loadExpectedCagrPct(10),
-    rows: loadGoalsRows(),
+    planningStartYear,
+    rows: loadedRows,
     goalOptions: loadOptions(GOALS_STORAGE_KEYS.goalOptions, []),
     realisedOptions: loadOptions(GOALS_STORAGE_KEYS.realisedOptions, []),
   };
 
-  if (!state.rows.length) state.rows = [newGoalRow()];
+  if (shouldUseDefaultGoals(state.rows)) state.rows = getDefaultGoalRows();
+  if (!hadPlanningStartKey) savePlanningStartYear(state.planningStartYear);
+
   controls.cagr.value = String(state.expectedCagrPct);
+  controls.startYear.value = String(state.planningStartYear);
 
   const onChange = () => render(controls, state);
 
   controls.cagr.addEventListener('input', onChange);
-  controls.search.addEventListener('input', onChange);
+  controls.startYear.addEventListener('input', onChange);
   controls.table.querySelectorAll('thead .filter-row .filter-input, thead .filter-row .filter-select').forEach((n) => {
     n.addEventListener('input', onChange);
     n.addEventListener('change', onChange);
   });
 
-  controls.addRow.addEventListener('click', () => {
-    state.rows.push(newGoalRow());
-    onChange();
-  });
-
-  controls.exportCsv.addEventListener('click', () => {
-    const currentYear = new Date().getFullYear();
-    const visible = sortRows(applyFilters(state.rows, controls));
-    const lines = [
-      ['Goal', 'Realised', 'CostToday', 'NeedDesire', 'Priority', 'AchieveByYear', 'InflationPct', 'DurationYears', 'ValueAfterInflation', 'AnnualInvestment', 'MonthlySip', 'Achieved'],
-    ];
-    visible.forEach((r) => {
-      const d = computeGoalDerived(r, state.expectedCagrPct, currentYear);
-      lines.push([
-        r.goal,
-        r.realisedGoal,
-        r.costToday,
-        r.needDesire,
-        r.priority,
-        r.achieveByYear,
-        r.segmentInflationPct,
-        d.durationYears,
-        Math.round(d.valueAfterInflation),
-        Math.round(d.annualInvestment),
-        Math.round(d.monthlySip),
-        r.achieved,
-      ]);
+  if (controls.addRow) {
+    controls.addRow.addEventListener('click', () => {
+      state.rows.push(newGoalRow());
+      onChange();
     });
-    const csv = lines.map((row) => row.map((c) => '\"' + String(c ?? '').replaceAll('\"', '\"\"') + '\"').join(',')).join('\\n');
-    navigator.clipboard.writeText(csv);
-  });
+  }
 
-  controls.print.addEventListener('click', () => window.print());
+  if (controls.exportCsv) {
+    controls.exportCsv.addEventListener('click', () => {
+      const visible = sortRows(applyFilters(state.rows, controls));
+      const lines = [
+        ['Goal', 'Realised', 'CostToday', 'NeedDesire', 'Priority', 'AchieveByYear', 'InflationPct', 'DurationYears', 'ValueAfterInflation', 'AnnualInvestment', 'MonthlySip', 'Achieved'],
+      ];
+      visible.forEach((r) => {
+        const d = computeGoalDerived(r, state.expectedCagrPct, state.planningStartYear);
+        lines.push([
+          r.goal,
+          r.realisedGoal,
+          r.costToday,
+          r.needDesire,
+          r.priority,
+          r.achieveByYear,
+          r.segmentInflationPct,
+          d.durationYears,
+          Math.round(d.valueAfterInflation),
+          Math.round(d.annualInvestment),
+          Math.round(d.monthlySip),
+          r.achieved,
+        ]);
+      });
+      const csv = lines.map((row) => row.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(',')).join('\n');
+      navigator.clipboard.writeText(csv);
+    });
+  }
+
+  if (controls.print) {
+    controls.print.addEventListener('click', () => globalThis.print());
+  }
 
   // Sorting
   controls.table.querySelectorAll('thead th[data-sort] .sort-btn').forEach((btn) => {
@@ -393,7 +403,13 @@ export function initGoalsTab() {
     const row = state.rows.find((r) => r.id === rowId);
     if (!row) return;
     if (t instanceof HTMLInputElement && t.type === 'checkbox') row[field] = t.checked;
-    else if (t instanceof HTMLInputElement) row[field] = t.value;
+    else if (t instanceof HTMLInputElement && t.type === 'number') {
+      const n = Number.parseFloat(t.value);
+      if (field === 'costToday') row[field] = Number.isFinite(n) ? n : 0;
+      else if (field === 'achieveByYear' || field === 'segmentInflationPct') {
+        row[field] = Number.isFinite(n) ? n : 0;
+      } else row[field] = t.value;
+    } else if (t instanceof HTMLInputElement) row[field] = t.value;
     else if (t instanceof HTMLSelectElement) row[field] = t.value;
   });
   controls.tbody.addEventListener('change', onChange);
@@ -407,6 +423,7 @@ export function initGoalsTab() {
     }
   });
 
+  initGoalsTab._didInit = true;
   onChange();
 }
 

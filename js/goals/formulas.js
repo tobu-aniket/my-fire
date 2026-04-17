@@ -1,9 +1,9 @@
 /**
- * Goals formulas (annual compounding) with Excel-compatible FV/PMT behavior.
+ * Goals formulas (annual compounding) with standard FV/PMT semantics.
  */
 
 /**
- * Excel-like FV.
+ * Future value (spreadsheet-style FV).
  * @param {number} rate
  * @param {number} nper
  * @param {number} pmt
@@ -23,7 +23,7 @@ export function fv(rate, nper, pmt, pv, type = 0) {
 }
 
 /**
- * Excel-like PMT.
+ * Payment per period (spreadsheet-style PMT).
  * @param {number} rate
  * @param {number} nper
  * @param {number} pv
@@ -43,17 +43,18 @@ export function pmt(rate, nper, pv, fvVal = 0, type = 0) {
 }
 
 /**
+ * Years from the planning baseline to the goal year: Achieve by − planning start year.
  * @param {number} achieveByYear
- * @param {number} currentYear
+ * @param {number} planningStartYear
  */
-export function durationYears(achieveByYear, currentYear) {
-  const d = Number(achieveByYear) - Number(currentYear);
+export function durationYears(achieveByYear, planningStartYear) {
+  const d = Number(achieveByYear) - Number(planningStartYear);
   if (!Number.isFinite(d)) return 0;
   return Math.max(0, Math.round(d));
 }
 
-export function computeGoalDerived(row, expectedCagrPct, currentYear) {
-  const dur = durationYears(row.achieveByYear, currentYear);
+export function computeGoalDerived(row, expectedCagrPct, planningStartYear) {
+  const dur = durationYears(row.achieveByYear, planningStartYear);
   const inflRate = Number(row.segmentInflationPct) / 100;
   const cagrRate = Number(expectedCagrPct) / 100;
 

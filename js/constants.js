@@ -64,11 +64,18 @@ export const INFO_ICON_SVG =
 
 // Goals tab
 export const GOALS_STORAGE_KEYS = {
-  rows: 'goals_rows_v1',
+  /** v2: bump so a fresh 17-row seed applies; v1 had many stuck partial/empty states. */
+  rows: 'goals_rows_v2',
   expectedCagrPct: 'goals_expectedCagrPct_v1',
+  planningStartYear: 'goals_planningStartYear_v1',
   goalOptions: 'goals_goalOptions_v1',
   realisedOptions: 'goals_realisedOptions_v1',
 };
+
+/** Baseline year for duration when none is saved (calendar year). */
+export function getGoalsDefaultPlanningStartYear() {
+  return new Date().getFullYear();
+}
 
 export const GOALS_ENUMS = {
   needDesire: ['Need', 'Desire'],
