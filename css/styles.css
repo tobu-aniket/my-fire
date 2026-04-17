@@ -614,6 +614,17 @@ td.num {
   white-space: nowrap;
 }
 
+/* Goals footer: allow the label to wrap; keep totals fully visible. */
+#goals-table tfoot td.num[colspan] {
+  white-space: normal;
+  text-align: left;
+}
+
+#goals-table tfoot td.num {
+  overflow: visible;
+  text-overflow: clip;
+}
+
 td.words {
   font-size: 0.8rem;
   color: var(--muted);
