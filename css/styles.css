@@ -14,6 +14,21 @@
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
+/* Same tokens as :root — used for theme gallery preview cards (see themes.html). */
+[data-theme='light'] {
+  --bg: #f6f7f4;
+  --surface: #ffffff;
+  --text: #1a1f16;
+  --muted: #5c6658;
+  --accent: #38761d;
+  --accent-soft: rgba(56, 118, 29, 0.12);
+  --border: #d8e0d3;
+  --input-bg: #fffefb;
+  --shadow: 0 4px 24px rgba(26, 31, 22, 0.08);
+  --font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
 [data-theme='dark'] {
   --bg: #121612;
   --surface: #1a1f18;
@@ -85,6 +100,111 @@
   --border: rgba(31, 22, 54, 0.16);
   --input-bg: #fbf8ff;
   --shadow: 0 10px 28px rgba(124, 58, 237, 0.14);
+}
+
+/* VS Code default light: cool neutrals + blue accent */
+[data-theme='vscodeDefault'] {
+  --bg: #f3f3f3;
+  --surface: #ffffff;
+  --text: #1e1e1e;
+  --muted: #616161;
+  --accent: #0078d4;
+  --accent-soft: rgba(0, 120, 212, 0.12);
+  --border: #e5e5e5;
+  --input-bg: #ffffff;
+  --shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* VS Code default dark: editor-like dark UI */
+[data-theme='vscodeDark'] {
+  --bg: #1e1e1e;
+  --surface: #252526;
+  --text: #cccccc;
+  --muted: #858585;
+  --accent: #3794ff;
+  --accent-soft: rgba(55, 148, 255, 0.18);
+  --border: #3c3c3c;
+  --input-bg: #3c3c3c;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* One Dark Pro–inspired: warm dark + gold accent */
+[data-theme='oneDarkPro'] {
+  --bg: #21252b;
+  --surface: #282c34;
+  --text: #abb2bf;
+  --muted: #5c6370;
+  --accent: #e5c07b;
+  --accent-soft: rgba(229, 192, 123, 0.16);
+  --border: rgba(171, 178, 191, 0.14);
+  --input-bg: #2c313a;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Matrix: terminal green on black */
+[data-theme='matrix'] {
+  --bg: #000000;
+  --surface: #031a03;
+  --text: #00ff41;
+  --muted: #00c936;
+  --accent: #39ff14;
+  --accent-soft: rgba(57, 255, 20, 0.12);
+  --border: rgba(0, 255, 65, 0.22);
+  --input-bg: #001400;
+  --shadow: 0 0 24px rgba(57, 255, 20, 0.12);
+  --font: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Winamp: classic Windows grey + lime accent */
+[data-theme='winamp'] {
+  --bg: #c0c0c0;
+  --surface: #d4d0c8;
+  --text: #000000;
+  --muted: #404040;
+  --accent: #00aa00;
+  --accent-soft: rgba(0, 170, 0, 0.18);
+  --border: #808080;
+  --input-bg: #ffffff;
+  --shadow: inset 0 1px 0 #ffffff, 2px 2px 0 #404040;
+}
+
+/* Supernova: deep space + hot magenta / cyan */
+[data-theme='supernova'] {
+  --bg: #0a0618;
+  --surface: #120b2e;
+  --text: #f4f0ff;
+  --muted: #c4b8ff;
+  --accent: #ff2bd6;
+  --accent-soft: rgba(255, 43, 214, 0.16);
+  --border: rgba(0, 255, 247, 0.18);
+  --input-bg: #0f0a24;
+  --shadow: 0 12px 36px rgba(255, 43, 214, 0.18);
+}
+
+/* Sunrise / sunset: warm peach and ember orange */
+[data-theme='sunrise'] {
+  --bg: #fff0e6;
+  --surface: #fff8f2;
+  --text: #3d2418;
+  --muted: #8b6048;
+  --accent: #ff6b2d;
+  --accent-soft: rgba(255, 107, 45, 0.2);
+  --border: rgba(200, 90, 50, 0.22);
+  --input-bg: #ffffff;
+  --shadow: 0 12px 34px rgba(255, 107, 45, 0.16);
+}
+
+/* Snow peak: icy blues, white caps, slate shadows */
+[data-theme='snowPeak'] {
+  --bg: #d4e8f2;
+  --surface: #f7fcff;
+  --text: #152a38;
+  --muted: #4a6b7d;
+  --accent: #1a6fa6;
+  --accent-soft: rgba(26, 111, 166, 0.16);
+  --border: #9ebfcf;
+  --input-bg: #ffffff;
+  --shadow: 0 10px 30px rgba(21, 42, 56, 0.1);
 }
 
 *,
@@ -827,4 +947,144 @@ code {
   .input-editable {
     border: 1px solid #999;
   }
+}
+
+/* --- Theme gallery (themes.html) --- */
+.themes-intro {
+  margin: 0 0 1rem;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.themes-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 720px) {
+  .themes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .themes-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.theme-scheme-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  box-shadow: var(--shadow);
+}
+
+.theme-scheme-card__header {
+  position: relative;
+  padding-right: 5.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.theme-scheme-card__apply {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.theme-scheme-card__header h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.theme-scheme-card__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.theme-scheme-card__hint code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+.theme-token-list {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.theme-token-list__item {
+  display: grid;
+  grid-template-columns: 1.35rem 7.5rem 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.theme-token-list__swatch {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+}
+
+.theme-token-list__name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.theme-token-list__value {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  word-break: break-word;
+  color: var(--text);
+  opacity: 0.92;
+}
+
+.theme-scheme-sample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.82rem;
+}
+
+.theme-scheme-sample__muted {
+  color: var(--muted);
+}
+
+.theme-scheme-sample__pill {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.theme-scheme-sample__shadow {
+  width: 2.5rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Read-only gallery of My FIRE UI themes and CSS color tokens." />
+    <link rel="canonical" href="https://tobu-aniket.github.io/my-fire/themes.html" />
+    <title>My FIRE — Themes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="wrap">
+      <header class="site-header">
+        <div>
+          <h1><a class="brand-link" href="index.html">My FIRE</a></h1>
+          <p class="lede">Theme gallery: each card shows that theme’s CSS tokens and samples.</p>
+        </div>
+        <div class="header-actions">
+          <nav class="nav-links" aria-label="Pages">
+            <a class="nav-link" href="fire.html">FIRE</a>
+            <a class="nav-link" href="goals.html">Goals</a>
+            <a class="nav-link" href="inflation.html">Inflation</a>
+            <span class="nav-link nav-link--active" aria-current="page">Themes</span>
+          </nav>
+          <button type="button" class="btn" id="btn-reset-all" title="Reset to defaults">Reset</button>
+          <label class="theme-switch" for="theme-select">
+            <span class="theme-switch__label">Theme</span>
+            <select id="theme-select" class="theme-switch__select" aria-label="Theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="vscodeDefault">VS Code (default)</option>
+              <option value="vscodeDark">VS Code (dark)</option>
+              <option value="oneDarkPro">One Dark Pro</option>
+              <option value="funky">Funky</option>
+              <option value="ocean">Ocean</option>
+              <option value="midnight">Midnight</option>
+              <option value="atomOneDark">Atom One Dark</option>
+              <option value="morningMystery">Morning Mystery</option>
+              <option value="matrix">Matrix</option>
+              <option value="winamp">Winamp</option>
+              <option value="supernova">Supernova</option>
+              <option value="sunrise">Sunrise</option>
+              <option value="snowPeak">Snow peak</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <main id="main">
+        <section class="card" aria-labelledby="themes-heading">
+          <h2 id="themes-heading">Themes</h2>
+          <p class="themes-intro">
+            This page is only linked from the <a href="index.html">home page</a>. Values are resolved from
+            <code>css/styles.css</code> for each preview card. Use the header control or <strong>Apply</strong> on a card
+            to set the site theme.
+          </p>
+
+          <div class="themes-grid">
+            <article class="theme-scheme-card" data-theme="light" aria-labelledby="theme-light-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-light-title">Light</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>light</code> (default)</p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="dark" aria-labelledby="theme-dark-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-dark-title">Dark</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>dark</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="vscodeDefault" aria-labelledby="theme-vscode-default-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-vscode-default-title">VS Code (default light)</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>vscodeDefault</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="vscodeDark" aria-labelledby="theme-vscode-dark-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-vscode-dark-title">VS Code (default dark)</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>vscodeDark</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="oneDarkPro" aria-labelledby="theme-one-dark-pro-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-one-dark-pro-title">One Dark Pro</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>oneDarkPro</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="funky" aria-labelledby="theme-funky-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-funky-title">Funky</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>funky</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="ocean" aria-labelledby="theme-ocean-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-ocean-title">Ocean</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>ocean</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="midnight" aria-labelledby="theme-midnight-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-midnight-title">Midnight</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>midnight</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="atomOneDark" aria-labelledby="theme-atom-one-dark-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-atom-one-dark-title">Atom One Dark</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>atomOneDark</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="morningMystery" aria-labelledby="theme-morning-mystery-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-morning-mystery-title">Morning Mystery</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>morningMystery</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="matrix" aria-labelledby="theme-matrix-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-matrix-title">Matrix</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>matrix</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="winamp" aria-labelledby="theme-winamp-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-winamp-title">Winamp</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>winamp</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="supernova" aria-labelledby="theme-supernova-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-supernova-title">Supernova</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>supernova</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="sunrise" aria-labelledby="theme-sunrise-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-sunrise-title">Sunrise</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>sunrise</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+
+            <article class="theme-scheme-card" data-theme="snowPeak" aria-labelledby="theme-snow-peak-title">
+              <header class="theme-scheme-card__header">
+                <h2 id="theme-snow-peak-title">Snow peak</h2>
+                <p class="theme-scheme-card__hint">Stored as <code>snowPeak</code></p>
+              </header>
+              <ul class="theme-token-list" role="list">
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--bg</code></span>
+                  <span class="theme-token-list__value" data-token="--bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--surface)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--surface</code></span>
+                  <span class="theme-token-list__value" data-token="--surface"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--text)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--text</code></span>
+                  <span class="theme-token-list__value" data-token="--text"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--muted)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--muted</code></span>
+                  <span class="theme-token-list__value" data-token="--muted"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent</code></span>
+                  <span class="theme-token-list__value" data-token="--accent"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--accent-soft)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--accent-soft</code></span>
+                  <span class="theme-token-list__value" data-token="--accent-soft"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--border)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--border</code></span>
+                  <span class="theme-token-list__value" data-token="--border"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch" style="background: var(--input-bg)" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--input-bg</code></span>
+                  <span class="theme-token-list__value" data-token="--input-bg"></span>
+                </li>
+                <li class="theme-token-list__item">
+                  <span class="theme-token-list__swatch theme-scheme-sample__shadow" aria-hidden="true"></span>
+                  <span class="theme-token-list__name"><code>--shadow</code></span>
+                  <span class="theme-token-list__value" data-token="--shadow"></span>
+                </li>
+              </ul>
+              <div class="theme-scheme-sample">
+                <span class="theme-scheme-sample__pill">Accent chip</span>
+                <a href="#">Link sample</a>
+                <span class="theme-scheme-sample__muted">Muted sample</span>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Static page — theme gallery.</p>
+      </footer>
+    </div>
+    <script type="module" src="js/themes/page.js"></script>
+  </body>
+</html>
