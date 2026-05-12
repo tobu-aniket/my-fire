@@ -28,12 +28,19 @@ export const SHARE_PARAM_CONFIG = {
   },
 };
 
+/** Default FIRE calculator inputs (keys mirror Sheet4 / workbook cell refs). `a22` is local-only (not in share URL). */
 export const DEFAULTS = {
+  // c2 — monthly expense (₹); input `in-c2`, share param `monthlyExpense`
   c2: 100000,
-  f2: 10,
-  c4: 2024,
+  // f2 — years to retirement; input `in-f2`, share param `yearsToRetirement`
+  f2: 5,
+  // c4 — planning start year; input `in-c4`, share param `startYear`
+  c4: 2026,
+  // f4 — annual inflation (%); input `in-f4`, share param `inflationPct`
   f4: 6,
+  // f7 — expected annual CAGR (%) for Coast FIRE; input `in-f7`, share param `expectedCagrPct`
   f7: 10,
+  // a22 — expected annual CAGR (%) for the custom row; input `in-a22` (not in share link)
   a22: 10,
 };
 
